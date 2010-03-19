@@ -8,9 +8,9 @@ namespace warmup
     {
         private readonly WarmupConfiguration configuration;
 
-        public Git(WarmupConfiguration configuration)
+        public Git(IWarmupConfigurationProvider warmupConfigurationProvider)
         {
-            this.configuration = configuration;
+            configuration = warmupConfigurationProvider.GetWarmupConfiguration();
         }
 
         public bool CanExport()

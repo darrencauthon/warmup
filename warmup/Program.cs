@@ -23,12 +23,15 @@ namespace warmup
 
         private static TargetDir PullDownTheTemplate(CommandLineArgumentSet arguments)
         {
-            var baseUri = new Uri(WarmupConfiguration.settings.SourceControlWarmupLocation + arguments.TemplateName);
+
+            var warmupConfigurationProvider = GetTheWarmupConfigurationProvider();
+
+            var baseUri = new Uri(warmupConfigurationProvider.GetWarmupConfiguration().SourceControlWarmupLocation + arguments.TemplateName);
             var targetDir = new TargetDir(arguments.TokenReplaceValue);
 
             var templateHandlers = new ISourceControlTemplateHandler[]{
-                                                                          new Git(WarmupConfiguration.settings),
-                                                                          new Svn(WarmupConfiguration.settings)
+                                                                          new Git(warmupConfigurationProvider),
+                                                                          new Svn(warmupConfigurationProvider)
                                                                       };
             templateHandlers.ToList()
                 .ForEach(handler =>
@@ -37,6 +40,11 @@ namespace warmup
                                      handler.Export(baseUri, targetDir);
                              });
             return targetDir;
+        }
+
+        private static IWarmupConfigurationProvider GetTheWarmupConfigurationProvider()
+        {
+            return new ConfigurationFileWarmupConfigurationProvider();
         }
 
         private static CommandLineArgumentSet GetCommandLineArguments(string[] args)

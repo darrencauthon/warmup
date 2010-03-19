@@ -8,9 +8,9 @@ namespace warmup
     {
         private readonly WarmupConfiguration configuration;
 
-        public Svn(WarmupConfiguration configuration)
+        public Svn(IWarmupConfigurationProvider warmupConfigurationProvider)
         {
-            this.configuration = configuration;
+            configuration = warmupConfigurationProvider.GetWarmupConfiguration();
         }
 
         public bool CanExport()
