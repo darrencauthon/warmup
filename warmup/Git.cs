@@ -15,7 +15,12 @@ namespace warmup
 
         public bool CanExport()
         {
-            return configuration.SourceControlType == SourceControlType.Git;
+            return TheSourceControlTypeIsGit();
+        }
+
+        private bool TheSourceControlTypeIsGit()
+        {
+            return string.Compare(configuration.SourceControlType, "Git", true) == 0;
         }
 
         public void Export(Uri sourceLocation, TargetDir target)

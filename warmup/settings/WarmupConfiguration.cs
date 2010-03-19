@@ -1,13 +1,13 @@
+using System.Configuration;
+
 namespace warmup.settings
 {
-    using System.Configuration;
-
     /// <summary>
     /// Configuration Handler for Warmup
     /// </summary>
     public sealed class WarmupConfiguration : ConfigurationSection
     {
-        static readonly WarmupConfiguration _settings =
+        private static readonly WarmupConfiguration _settings =
             ConfigurationManager.GetSection("warmup") as WarmupConfiguration;
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace warmup.settings
         /// <summary>
         /// What type of source control are we using?
         /// </summary>
-        [ConfigurationProperty("sourceControlType", IsRequired = false, DefaultValue="svn")]
+        [ConfigurationProperty("sourceControlType", IsRequired = false, DefaultValue = "svn")]
         public string SourceControl
         {
             get { return (string)this["sourceControlType"]; }
@@ -38,15 +38,13 @@ namespace warmup.settings
 
         public string SourceControlType
         {
-            get {
+            get
+            {
                 if (SourceControl.Contains("git"))
-                {
-                    return warmup.SourceControlType.Git;
-                }
+                    return "git";
 
-                return warmup.SourceControlType.Subversion;
+                return "svn";
             }
         }
-
     }
 }

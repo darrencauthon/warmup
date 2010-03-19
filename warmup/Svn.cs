@@ -15,7 +15,12 @@ namespace warmup
 
         public bool CanExport()
         {
-            return configuration.SourceControlType == SourceControlType.Subversion;
+            return TheSourceControlTypeIsSvn();
+        }
+
+        private bool TheSourceControlTypeIsSvn()
+        {
+            return string.Compare(configuration.SourceControlType, "Svn", true) == 0;
         }
 
         public void Export(Uri sourceLocation, TargetDir target)
