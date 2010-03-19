@@ -11,30 +11,26 @@ namespace warmup
         {
             var arguments = GetCommandLineArguments(args);
 
-            var targetDir = PullDownTheTemplateFilesIntoDirectory(arguments);
+            DownloadTheTemplateFiles(arguments);
 
-            ReplaceTokensInTheTemplate(arguments, targetDir);
+            ReplaceTokensInTheTemplateFiles(arguments);
         }
 
-        private static void ReplaceTokensInTheTemplate(CommandLineArgumentSet arguments, TargetDir targetDir)
+        private static void ReplaceTokensInTheTemplateFiles(CommandLineArgumentSet arguments)
         {
             Console.WriteLine("replacing tokens");
-            targetDir.ReplaceTokens(arguments.TokenReplaceValue);
+            (new TargetDir(arguments.TokenReplaceValue)).ReplaceTokens(arguments.TokenReplaceValue);
         }
 
-        private static TargetDir PullDownTheTemplateFilesIntoDirectory(CommandLineArgumentSet arguments)
+        private static void DownloadTheTemplateFiles(CommandLineArgumentSet arguments)
         {
-            var baseUri = new Uri(GetTheWarmupConfigurationProvider().GetWarmupConfiguration().SourceControlWarmupLocation + arguments.TemplateName);
-            var targetDir = new TargetDir(arguments.TokenReplaceValue);
-
             GetTemplateFileRetrievers()
                 .ToList()
                 .ForEach(retriever =>
                              {
                                  if (retriever.CanRetrieve())
-                                     retriever.RetrieveFiles(baseUri, targetDir);
+                                     retriever.RetrieveFiles(arguments);
                              });
-            return targetDir;
         }
 
         private static ITemplateFilesRetriever[] GetTemplateFileRetrievers()

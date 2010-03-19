@@ -23,8 +23,11 @@ namespace warmup.TemplateFileRetrievers
             return string.Compare(configuration.SourceControlType, "Git", true) == 0;
         }
 
-        public void RetrieveFiles(Uri sourceLocation, TargetDir target)
+        public void RetrieveFiles(CommandLineArgumentSet commandLineArgumentSet)
         {
+            var sourceLocation = new Uri(configuration.SourceControlWarmupLocation + commandLineArgumentSet.TemplateName);
+            var target = new TargetDir(commandLineArgumentSet.TokenReplaceValue);
+
             Console.WriteLine("Hardcore git cloning action to: {0}", target.FullPath);
 
             var separationCharacters = new[]{".git"};
