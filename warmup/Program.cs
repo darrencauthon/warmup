@@ -10,22 +10,22 @@ namespace warmup
             var arguments = GetCommandLineArguments(args);
 
             var baseUri = new Uri(WarmupConfiguration.settings.SourceControlWarmupLocation + arguments.TemplateName);
-            var td = new TargetDir(arguments.TokenReplaceValue);
+            var targetDir = new TargetDir(arguments.TokenReplaceValue);
 
             switch (WarmupConfiguration.settings.SourceControlType)
             {
                 case SourceControlType.Subversion:
-                    Console.WriteLine("svn exporting to: {0}", td.FullPath);
-                    Svn.Export(baseUri, td);
+                    Console.WriteLine("svn exporting to: {0}", targetDir.FullPath);
+                    Svn.Export(baseUri, targetDir);
                     break;
                 case SourceControlType.Git:
-                    Console.WriteLine("Hardcore git cloning action to: {0}", td.FullPath);
-                    Git.Clone(baseUri, td);
+                    Console.WriteLine("Hardcore git cloning action to: {0}", targetDir.FullPath);
+                    Git.Clone(baseUri, targetDir);
                     break;
             }
 
             Console.WriteLine("replacing tokens");
-            td.ReplaceTokens(arguments.TokenReplaceValue);
+            targetDir.ReplaceTokens(arguments.TokenReplaceValue);
         }
 
         private static CommandLineArgumentSet GetCommandLineArguments(string[] args)
