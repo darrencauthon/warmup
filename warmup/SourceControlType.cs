@@ -1,8 +1,8 @@
 namespace warmup
 {
-    public enum SourceControlType
+    public class SourceControlType
     {
-        Subversion
-        ,Git
+        public const string Subversion = "Subversion";
+        public const string Git = "Git";
     }
 }

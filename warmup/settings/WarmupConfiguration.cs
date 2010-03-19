@@ -36,15 +36,15 @@ namespace warmup.settings
             get { return (string)this["sourceControlType"]; }
         }
 
-        public SourceControlType SourceControlType
+        public string SourceControlType
         {
-            get { 
+            get {
                 if (SourceControl.Contains("git"))
                 {
-                    return SourceControlType.Git;
+                    return warmup.SourceControlType.Git;
                 }
 
-                return SourceControlType.Subversion;
+                return warmup.SourceControlType.Subversion;
             }
         }
 
