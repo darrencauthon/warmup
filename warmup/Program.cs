@@ -24,23 +24,22 @@ namespace warmup
 
         private static TargetDir PullDownTheTemplateFilesIntoDirectory(CommandLineArgumentSet arguments)
         {
-            var warmupConfigurationProvider = GetTheWarmupConfigurationProvider();
-
-            var baseUri = new Uri(warmupConfigurationProvider.GetWarmupConfiguration().SourceControlWarmupLocation + arguments.TemplateName);
+            var baseUri = new Uri(GetTheWarmupConfigurationProvider().GetWarmupConfiguration().SourceControlWarmupLocation + arguments.TemplateName);
             var targetDir = new TargetDir(arguments.TokenReplaceValue);
 
-            GetTemplateFileRetrievers(warmupConfigurationProvider)
+            GetTemplateFileRetrievers()
                 .ToList()
-                .ForEach(handler =>
+                .ForEach(retriever =>
                              {
-                                 if (handler.CanExport())
-                                     handler.Export(baseUri, targetDir);
+                                 if (retriever.CanRetrieve())
+                                     retriever.RetrieveFiles(baseUri, targetDir);
                              });
             return targetDir;
         }
 
-        private static ITemplateFilesRetriever[] GetTemplateFileRetrievers(IWarmupConfigurationProvider warmupConfigurationProvider)
+        private static ITemplateFilesRetriever[] GetTemplateFileRetrievers()
         {
+            var warmupConfigurationProvider = GetTheWarmupConfigurationProvider();
             return new ITemplateFilesRetriever[]{
                                                     new GitTemplateFilesRetriever(warmupConfigurationProvider),
                                                     new SvnTemplateFilesRetriever(warmupConfigurationProvider)

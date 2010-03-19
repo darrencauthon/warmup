@@ -13,7 +13,7 @@ namespace warmup.TemplateFileRetrievers
             configuration = warmupConfigurationProvider.GetWarmupConfiguration();
         }
 
-        public bool CanExport()
+        public bool CanRetrieve()
         {
             return TheSourceControlTypeIsGit();
         }
@@ -23,7 +23,7 @@ namespace warmup.TemplateFileRetrievers
             return string.Compare(configuration.SourceControlType, "Git", true) == 0;
         }
 
-        public void Export(Uri sourceLocation, TargetDir target)
+        public void RetrieveFiles(Uri sourceLocation, TargetDir target)
         {
             Console.WriteLine("Hardcore git cloning action to: {0}", target.FullPath);
 
