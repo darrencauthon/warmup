@@ -1,20 +1,20 @@
+using System;
+using System.Diagnostics;
+
 namespace warmup
 {
-    using System;
-    using System.Diagnostics;
-
-    public class Svn
+    public class Svn : ISourceControlTemplateHandler
     {
-        public static void Export(Uri sourceLocation, TargetDir target)
+        public void Export(Uri sourceLocation, TargetDir target)
         {
-            var psi = new ProcessStartInfo("svn", 
-                string.Format("export {0} {1}", sourceLocation, target.FullPath));
-            
+            var psi = new ProcessStartInfo("svn",
+                                           string.Format("export {0} {1}", sourceLocation, target.FullPath));
+
             psi.UseShellExecute = false;
             psi.CreateNoWindow = true;
             psi.RedirectStandardOutput = true;
             psi.RedirectStandardError = true;
-            
+
             //todo: better error handling
             Console.WriteLine("Running: {0} {1}", psi.FileName, psi.Arguments);
             string output, error = "";

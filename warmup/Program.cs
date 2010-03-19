@@ -16,11 +16,11 @@ namespace warmup
             {
                 case SourceControlType.Subversion:
                     Console.WriteLine("svn exporting to: {0}", targetDir.FullPath);
-                    Svn.Export(baseUri, targetDir);
+                    (new Svn()).Export(baseUri, targetDir);
                     break;
                 case SourceControlType.Git:
                     Console.WriteLine("Hardcore git cloning action to: {0}", targetDir.FullPath);
-                    Git.Clone(baseUri, targetDir);
+                    (new Git()).Export(baseUri, targetDir);
                     break;
             }
 
