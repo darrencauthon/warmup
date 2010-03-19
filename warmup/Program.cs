@@ -11,7 +11,7 @@ namespace warmup
         {
             var commandLineArgumentSet = GetCommandLineArguments(args);
 
-            DownloadTheTemplateFiles(commandLineArgumentSet);
+            RetrieveTheTemplateFiles(commandLineArgumentSet);
 
             ReplaceTokensInTheTemplateFiles(commandLineArgumentSet);
         }
@@ -22,7 +22,7 @@ namespace warmup
             (new TargetDir(commandLineArgumentSet.TokenReplaceValue)).ReplaceTokens(commandLineArgumentSet.TokenReplaceValue);
         }
 
-        private static void DownloadTheTemplateFiles(CommandLineArgumentSet commandLineArgumentSet)
+        private static void RetrieveTheTemplateFiles(CommandLineArgumentSet commandLineArgumentSet)
         {
             GetTemplateFileRetrievers()
                 .ToList()
