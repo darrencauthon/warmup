@@ -11,7 +11,7 @@ namespace warmup
         {
             var arguments = GetCommandLineArguments(args);
 
-            var targetDir = PullDownTheTemplate(arguments);
+            var targetDir = PullDownTheTemplateFilesIntoDirectory(arguments);
 
             ReplaceTokensInTheTemplate(arguments, targetDir);
         }
@@ -22,25 +22,29 @@ namespace warmup
             targetDir.ReplaceTokens(arguments.TokenReplaceValue);
         }
 
-        private static TargetDir PullDownTheTemplate(CommandLineArgumentSet arguments)
+        private static TargetDir PullDownTheTemplateFilesIntoDirectory(CommandLineArgumentSet arguments)
         {
-
             var warmupConfigurationProvider = GetTheWarmupConfigurationProvider();
 
             var baseUri = new Uri(warmupConfigurationProvider.GetWarmupConfiguration().SourceControlWarmupLocation + arguments.TemplateName);
             var targetDir = new TargetDir(arguments.TokenReplaceValue);
 
-            var templateHandlers = new ITemplateFilesRetriever[]{
-                                                                          new GitTemplateFilesRetriever(warmupConfigurationProvider),
-                                                                          new SvnTemplateFilesRetriever(warmupConfigurationProvider)
-                                                                      };
-            templateHandlers.ToList()
+            GetTemplateFileRetrievers(warmupConfigurationProvider)
+                .ToList()
                 .ForEach(handler =>
                              {
                                  if (handler.CanExport())
                                      handler.Export(baseUri, targetDir);
                              });
             return targetDir;
+        }
+
+        private static ITemplateFilesRetriever[] GetTemplateFileRetrievers(IWarmupConfigurationProvider warmupConfigurationProvider)
+        {
+            return new ITemplateFilesRetriever[]{
+                                                    new GitTemplateFilesRetriever(warmupConfigurationProvider),
+                                                    new SvnTemplateFilesRetriever(warmupConfigurationProvider)
+                                                };
         }
 
         private static IWarmupConfigurationProvider GetTheWarmupConfigurationProvider()
