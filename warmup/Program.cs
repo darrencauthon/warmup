@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using warmup.settings;
+using warmup.TemplateFileRetrievers;
 
 namespace warmup
 {
@@ -29,9 +30,9 @@ namespace warmup
             var baseUri = new Uri(warmupConfigurationProvider.GetWarmupConfiguration().SourceControlWarmupLocation + arguments.TemplateName);
             var targetDir = new TargetDir(arguments.TokenReplaceValue);
 
-            var templateHandlers = new ISourceControlTemplateHandler[]{
-                                                                          new Git(warmupConfigurationProvider),
-                                                                          new Svn(warmupConfigurationProvider)
+            var templateHandlers = new ITemplateFilesRetriever[]{
+                                                                          new GitTemplateFilesRetriever(warmupConfigurationProvider),
+                                                                          new SvnTemplateFilesRetriever(warmupConfigurationProvider)
                                                                       };
             templateHandlers.ToList()
                 .ForEach(handler =>

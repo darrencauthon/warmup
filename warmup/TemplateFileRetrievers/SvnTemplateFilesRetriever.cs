@@ -2,13 +2,13 @@ using System;
 using System.Diagnostics;
 using warmup.settings;
 
-namespace warmup
+namespace warmup.TemplateFileRetrievers
 {
-    public class Svn : ISourceControlTemplateHandler
+    public class SvnTemplateFilesRetriever : ITemplateFilesRetriever
     {
         private readonly WarmupConfiguration configuration;
 
-        public Svn(IWarmupConfigurationProvider warmupConfigurationProvider)
+        public SvnTemplateFilesRetriever(IWarmupConfigurationProvider warmupConfigurationProvider)
         {
             configuration = warmupConfigurationProvider.GetWarmupConfiguration();
         }

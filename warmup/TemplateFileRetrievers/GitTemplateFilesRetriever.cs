@@ -2,13 +2,13 @@ using System;
 using System.Diagnostics;
 using warmup.settings;
 
-namespace warmup
+namespace warmup.TemplateFileRetrievers
 {
-    public class Git : ISourceControlTemplateHandler
+    public class GitTemplateFilesRetriever : ITemplateFilesRetriever
     {
         private readonly WarmupConfiguration configuration;
 
-        public Git(IWarmupConfigurationProvider warmupConfigurationProvider)
+        public GitTemplateFilesRetriever(IWarmupConfigurationProvider warmupConfigurationProvider)
         {
             configuration = warmupConfigurationProvider.GetWarmupConfiguration();
         }
