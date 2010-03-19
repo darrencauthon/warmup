@@ -1,12 +1,27 @@
 using System;
 using System.Diagnostics;
+using warmup.settings;
 
 namespace warmup
 {
     public class Git : ISourceControlTemplateHandler
     {
+        private readonly WarmupConfiguration configuration;
+
+        public Git(WarmupConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
+
+        public bool CanExport()
+        {
+            return configuration.SourceControlType == SourceControlType.Git;
+        }
+
         public void Export(Uri sourceLocation, TargetDir target)
         {
+            Console.WriteLine("Hardcore git cloning action to: {0}", target.FullPath);
+
             var separationCharacters = new[]{".git"};
             var piecesOfPath = sourceLocation.ToString().Split(separationCharacters, StringSplitOptions.RemoveEmptyEntries);
             if (piecesOfPath != null && piecesOfPath.Length > 0)
