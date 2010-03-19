@@ -9,27 +9,27 @@ namespace warmup
     {
         private static void Main(string[] args)
         {
-            var arguments = GetCommandLineArguments(args);
+            var commandLineArgumentSet = GetCommandLineArguments(args);
 
-            DownloadTheTemplateFiles(arguments);
+            DownloadTheTemplateFiles(commandLineArgumentSet);
 
-            ReplaceTokensInTheTemplateFiles(arguments);
+            ReplaceTokensInTheTemplateFiles(commandLineArgumentSet);
         }
 
-        private static void ReplaceTokensInTheTemplateFiles(CommandLineArgumentSet arguments)
+        private static void ReplaceTokensInTheTemplateFiles(CommandLineArgumentSet commandLineArgumentSet)
         {
             Console.WriteLine("replacing tokens");
-            (new TargetDir(arguments.TokenReplaceValue)).ReplaceTokens(arguments.TokenReplaceValue);
+            (new TargetDir(commandLineArgumentSet.TokenReplaceValue)).ReplaceTokens(commandLineArgumentSet.TokenReplaceValue);
         }
 
-        private static void DownloadTheTemplateFiles(CommandLineArgumentSet arguments)
+        private static void DownloadTheTemplateFiles(CommandLineArgumentSet commandLineArgumentSet)
         {
             GetTemplateFileRetrievers()
                 .ToList()
                 .ForEach(retriever =>
                              {
                                  if (retriever.CanRetrieve())
-                                     retriever.RetrieveFiles(arguments);
+                                     retriever.RetrieveFiles(commandLineArgumentSet);
                              });
         }
 
