@@ -25,19 +25,16 @@ namespace warmup.TemplateFileRetrievers
 
         public void RetrieveFiles(CommandLineArgumentSet commandLineArgumentSet)
         {
-            var sourceLocation = new Uri(configuration.SourceControlWarmupLocation + commandLineArgumentSet.TemplateName);
-            var target = new TargetDir(commandLineArgumentSet.TokenReplaceValue);
+            var fullPath = new TargetDir(commandLineArgumentSet.TokenReplaceValue).FullPath;
+            Console.WriteLine("Hardcore git cloning action to: {0}", fullPath);
 
-            Console.WriteLine("Hardcore git cloning action to: {0}", target.FullPath);
-
-            var separationCharacters = new[]{".git"};
-            var piecesOfPath = sourceLocation.ToString().Split(separationCharacters, StringSplitOptions.RemoveEmptyEntries);
+            var piecesOfPath = GetThePiecesOfPath(commandLineArgumentSet);
             if (piecesOfPath != null && piecesOfPath.Length > 0)
             {
                 var sourceLocationToGit = piecesOfPath[0] + ".git";
 
                 var psi = new ProcessStartInfo("cmd",
-                                               string.Format(" /c git clone {0} {1}", sourceLocationToGit, target.FullPath));
+                                               string.Format(" /c git clone {0} {1}", sourceLocationToGit, fullPath));
 
                 psi.UseShellExecute = false;
                 psi.CreateNoWindow = true;
@@ -63,6 +60,14 @@ namespace warmup.TemplateFileRetrievers
                 //    Directory.Delete(git_directory, true);
                 //}
             }
+        }
+
+        private string[] GetThePiecesOfPath(CommandLineArgumentSet commandLineArgumentSet)
+        {
+            var separationCharacters = new[]{".git"};
+
+            var sourceLocation = new Uri(configuration.SourceControlWarmupLocation + commandLineArgumentSet.TemplateName);
+            return sourceLocation.ToString().Split(separationCharacters, StringSplitOptions.RemoveEmptyEntries);
         }
     }
 }
