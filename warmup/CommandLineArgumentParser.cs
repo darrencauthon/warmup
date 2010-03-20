@@ -2,15 +2,15 @@ using System.Collections.Generic;
 
 namespace warmup
 {
-    public class CommandLineArgumentParser
+    public class WarmupTemplateRequestParser
     {
-        public CommandLineArgumentSet GetArguments(string[] args)
+        public WarmupTemplateRequest GetArguments(string[] args)
         {
-            return new CommandLineArgumentSet{
-                                                 IsValid = DetermineIfArgsAreValid(args),
-                                                 TemplateName = PullTemplateNameFromArgs(args),
-                                                 TokenReplaceValue = PullTokenReplaceValueFromArgs(args),
-                                             };
+            return new WarmupTemplateRequest{
+                                                IsValid = DetermineIfArgsAreValid(args),
+                                                TemplateName = PullTemplateNameFromArgs(args),
+                                                TokenReplaceValue = PullTokenReplaceValueFromArgs(args),
+                                            };
         }
 
         private static string PullTokenReplaceValueFromArgs(string[] args)
@@ -29,7 +29,7 @@ namespace warmup
         }
     }
 
-    public class CommandLineArgumentSet
+    public class WarmupTemplateRequest
     {
         public bool IsValid { get; set; }
 

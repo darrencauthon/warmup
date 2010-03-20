@@ -23,12 +23,12 @@ namespace warmup.TemplateFileRetrievers
             return string.Compare(configuration.SourceControlType, "Git", true) == 0;
         }
 
-        public void RetrieveFiles(CommandLineArgumentSet commandLineArgumentSet)
+        public void RetrieveFiles(WarmupTemplateRequest warmupTemplateRequest)
         {
-            var fullPath = new TargetDir(commandLineArgumentSet.TokenReplaceValue).FullPath;
+            var fullPath = new TargetDir(warmupTemplateRequest.TokenReplaceValue).FullPath;
             Console.WriteLine("Hardcore git cloning action to: {0}", fullPath);
 
-            var piecesOfPath = GetThePiecesOfPath(commandLineArgumentSet);
+            var piecesOfPath = GetThePiecesOfPath(warmupTemplateRequest);
             if (piecesOfPath != null && piecesOfPath.Length > 0)
             {
                 var sourceLocationToGit = piecesOfPath[0] + ".git";
@@ -62,11 +62,11 @@ namespace warmup.TemplateFileRetrievers
             }
         }
 
-        private string[] GetThePiecesOfPath(CommandLineArgumentSet commandLineArgumentSet)
+        private string[] GetThePiecesOfPath(WarmupTemplateRequest warmupTemplateRequest)
         {
             var separationCharacters = new[]{".git"};
 
-            var sourceLocation = new Uri(configuration.SourceControlWarmupLocation + commandLineArgumentSet.TemplateName);
+            var sourceLocation = new Uri(configuration.SourceControlWarmupLocation + warmupTemplateRequest.TemplateName);
             return sourceLocation.ToString().Split(separationCharacters, StringSplitOptions.RemoveEmptyEntries);
         }
     }

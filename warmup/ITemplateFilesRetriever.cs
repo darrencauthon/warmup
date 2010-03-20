@@ -4,7 +4,7 @@ namespace warmup
 {
     public interface ITemplateFilesRetriever
     {
-        void RetrieveFiles(CommandLineArgumentSet commandLineArgumentSet);
+        void RetrieveFiles(WarmupTemplateRequest warmupTemplateRequest);
         bool CanRetrieve();
     }
 }

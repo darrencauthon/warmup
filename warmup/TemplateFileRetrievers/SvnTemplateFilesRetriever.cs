@@ -23,10 +23,10 @@ namespace warmup.TemplateFileRetrievers
             return string.Compare(configuration.SourceControlType, "Svn", true) == 0;
         }
 
-        public void RetrieveFiles(CommandLineArgumentSet commandLineArgumentSet)
+        public void RetrieveFiles(WarmupTemplateRequest warmupTemplateRequest)
         {
-            var sourceLocation = new Uri(configuration.SourceControlWarmupLocation + commandLineArgumentSet.TemplateName);
-            var target = new TargetDir(commandLineArgumentSet.TokenReplaceValue);
+            var sourceLocation = new Uri(configuration.SourceControlWarmupLocation + warmupTemplateRequest.TemplateName);
+            var target = new TargetDir(warmupTemplateRequest.TokenReplaceValue);
 
             Console.WriteLine("svn exporting to: {0}", target.FullPath);
 
