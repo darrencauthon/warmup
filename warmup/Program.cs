@@ -9,11 +9,11 @@ namespace warmup
     {
         private static void Main(string[] args)
         {
-            var commandLineArgumentSet = GetCommandLineArguments(args);
+            var warmupTemplateRequest = GetWarmupTemplateRequest(args);
 
-            RetrieveTheTemplateFiles(commandLineArgumentSet);
+            RetrieveTheTemplateFiles(warmupTemplateRequest);
 
-            ReplaceTokensInTheTemplateFiles(commandLineArgumentSet);
+            ReplaceTokensInTheTemplateFiles(warmupTemplateRequest);
         }
 
         private static void ReplaceTokensInTheTemplateFiles(WarmupTemplateRequest warmupTemplateRequest)
@@ -47,7 +47,7 @@ namespace warmup
             return new ConfigurationFileWarmupConfigurationProvider();
         }
 
-        private static WarmupTemplateRequest GetCommandLineArguments(string[] args)
+        private static WarmupTemplateRequest GetWarmupTemplateRequest(string[] args)
         {
             var parser = new WarmupTemplateRequestParser();
             var arguments = parser.GetArguments(args);
