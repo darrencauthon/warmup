@@ -28,21 +28,14 @@ namespace warmup.TemplateFileRetrievers
             var fullPath = new TargetDir(warmupTemplateRequest.TokenReplaceValue).FullPath;
             Console.WriteLine("Hardcore git cloning action to: {0}", fullPath);
 
-            var piecesOfPath = GetThePiecesOfPath(warmupTemplateRequest);
-            if (piecesOfPath != null && piecesOfPath.Length > 0)
+            var sourceLocationToGit = GetTheGitSourceLocation(warmupTemplateRequest);
+            if (string.IsNullOrEmpty(sourceLocationToGit) == false)
             {
-                var sourceLocationToGit = piecesOfPath[0] + ".git";
-
-                var psi = new ProcessStartInfo("cmd",
-                                               string.Format(" /c git clone {0} {1}", sourceLocationToGit, fullPath));
-
-                psi.UseShellExecute = false;
-                psi.CreateNoWindow = true;
-                psi.RedirectStandardOutput = true;
-                psi.RedirectStandardError = true;
+                var psi = CreateProcessStartInfo(fullPath, sourceLocationToGit);
 
                 //todo: better error handling
                 Console.WriteLine("Running: {0} {1}", psi.FileName, psi.Arguments);
+
                 string output, error = "";
                 using (var p = Process.Start(psi))
                 {
@@ -60,6 +53,26 @@ namespace warmup.TemplateFileRetrievers
                 //    Directory.Delete(git_directory, true);
                 //}
             }
+        }
+
+        private string GetTheGitSourceLocation(WarmupTemplateRequest warmupTemplateRequest)
+        {
+            var piecesOfPath = GetThePiecesOfPath(warmupTemplateRequest);
+            if (piecesOfPath.Length > 0)
+                return string.Empty;
+            return piecesOfPath[0] + ".git";
+        }
+
+        private ProcessStartInfo CreateProcessStartInfo(string fullPath, string sourceLocationToGit)
+        {
+            var psi = new ProcessStartInfo("cmd",
+                                           string.Format(" /c git clone {0} {1}", sourceLocationToGit, fullPath));
+
+            psi.UseShellExecute = false;
+            psi.CreateNoWindow = true;
+            psi.RedirectStandardOutput = true;
+            psi.RedirectStandardError = true;
+            return psi;
         }
 
         private string[] GetThePiecesOfPath(WarmupTemplateRequest warmupTemplateRequest)
