@@ -6,10 +6,12 @@ namespace warmup.TemplateFileRetrievers
 {
     public class SvnTemplateFilesRetriever : ITemplateFilesRetriever
     {
+        private readonly IPathDeterminer pathDeterminer;
         private readonly WarmupConfiguration configuration;
 
-        public SvnTemplateFilesRetriever(IWarmupConfigurationProvider warmupConfigurationProvider)
+        public SvnTemplateFilesRetriever(IWarmupConfigurationProvider warmupConfigurationProvider, IPathDeterminer pathDeterminer)
         {
+            this.pathDeterminer = pathDeterminer;
             configuration = warmupConfigurationProvider.GetWarmupConfiguration();
         }
 
@@ -26,12 +28,10 @@ namespace warmup.TemplateFileRetrievers
         public void RetrieveFiles(WarmupTemplateRequest warmupTemplateRequest)
         {
             var sourceLocation = new Uri(configuration.SourceControlWarmupLocation + warmupTemplateRequest.TemplateName);
-            var target = new TargetDir(warmupTemplateRequest.TokenReplaceValue);
 
-            Console.WriteLine("svn exporting to: {0}", target.FullPath);
+            Console.WriteLine("svn exporting to: {0}", pathDeterminer.FullPath);
 
-            var psi = new ProcessStartInfo("svn",
-                                           string.Format("export {0} {1}", sourceLocation, target.FullPath));
+            var psi = new ProcessStartInfo("svn", string.Format("export {0} {1}", sourceLocation, pathDeterminer.FullPath));
 
             psi.UseShellExecute = false;
             psi.CreateNoWindow = true;

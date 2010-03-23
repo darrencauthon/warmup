@@ -5,12 +5,22 @@ namespace warmup
     using System.IO;
     using System.Linq;
 
+    public interface IPathDeterminer
+    {
+        string FullPath { get; }
+    }
+
+    public interface ITokensInFilesReplacer
+    {
+        void ReplaceTokens(string name);
+    }
+
     [DebuggerDisplay("{FullPath}")]
-    public class TargetDir
+    public class PathDeterminer : IPathDeterminer, ITokensInFilesReplacer
     {
         readonly string _path;
 
-        public TargetDir(string path)
+        public PathDeterminer(string path)
         {
             _path = path;
         }

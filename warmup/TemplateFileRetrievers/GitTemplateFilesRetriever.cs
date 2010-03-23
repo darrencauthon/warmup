@@ -6,10 +6,12 @@ namespace warmup.TemplateFileRetrievers
 {
     public class GitTemplateFilesRetriever : ITemplateFilesRetriever
     {
+        private readonly IPathDeterminer pathDeterminer;
         private readonly WarmupConfiguration configuration;
 
-        public GitTemplateFilesRetriever(IWarmupConfigurationProvider warmupConfigurationProvider)
+        public GitTemplateFilesRetriever(IWarmupConfigurationProvider warmupConfigurationProvider, IPathDeterminer pathDeterminer)
         {
+            this.pathDeterminer = pathDeterminer;
             configuration = warmupConfigurationProvider.GetWarmupConfiguration();
         }
 
@@ -25,7 +27,7 @@ namespace warmup.TemplateFileRetrievers
 
         public void RetrieveFiles(WarmupTemplateRequest warmupTemplateRequest)
         {
-            var fullPath = new TargetDir(warmupTemplateRequest.TokenReplaceValue).FullPath;
+            var fullPath = pathDeterminer.FullPath;
             Console.WriteLine("Hardcore git cloning action to: {0}", fullPath);
 
             var sourceLocationToGit = GetTheGitSourceLocation(warmupTemplateRequest);

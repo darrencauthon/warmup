@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using warmup.settings;
 using warmup.TemplateFileRetrievers;
@@ -19,12 +19,22 @@ namespace warmup
         private static void ReplaceTokensInTheTemplateFiles(WarmupTemplateRequest warmupTemplateRequest)
         {
             Console.WriteLine("replacing tokens");
-            (new TargetDir(warmupTemplateRequest.TokenReplaceValue)).ReplaceTokens(warmupTemplateRequest.TokenReplaceValue);
+            (CreateTokenFileReplacer(warmupTemplateRequest)).ReplaceTokens(warmupTemplateRequest.TokenReplaceValue);
+        }
+
+        private static ITokensInFilesReplacer CreateTokenFileReplacer(WarmupTemplateRequest warmupTemplateRequest)
+        {
+            return new PathDeterminer(warmupTemplateRequest.TokenReplaceValue);
+        }
+
+        private static IPathDeterminer CreatePathDeterminer(WarmupTemplateRequest warmupTemplateRequest)
+        {
+            return new PathDeterminer(warmupTemplateRequest.TokenReplaceValue);
         }
 
         private static void RetrieveTheTemplateFiles(WarmupTemplateRequest warmupTemplateRequest)
         {
-            GetTemplateFileRetrievers()
+            GetTemplateFileRetrievers(CreatePathDeterminer(warmupTemplateRequest))
                 .ToList()
                 .ForEach(retriever =>
                              {
@@ -33,12 +43,12 @@ namespace warmup
                              });
         }
 
-        private static ITemplateFilesRetriever[] GetTemplateFileRetrievers()
+        private static ITemplateFilesRetriever[] GetTemplateFileRetrievers(IPathDeterminer pathDeterminer)
         {
             var warmupConfigurationProvider = GetTheWarmupConfigurationProvider();
             return new ITemplateFilesRetriever[]{
-                                                    new GitTemplateFilesRetriever(warmupConfigurationProvider),
-                                                    new SvnTemplateFilesRetriever(warmupConfigurationProvider)
+                                                    new GitTemplateFilesRetriever(warmupConfigurationProvider, pathDeterminer),
+                                                    new SvnTemplateFilesRetriever(warmupConfigurationProvider, pathDeterminer)
                                                 };
         }
 
