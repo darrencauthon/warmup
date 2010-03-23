@@ -1,38 +1,26 @@
+using System;
+using System.IO;
+using System.Linq;
+
 namespace warmup
 {
-    using System;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Linq;
-
-    public interface IPathDeterminer
-    {
-        string FullPath { get; }
-    }
-
     public interface ITokensInFilesReplacer
     {
         void ReplaceTokens(string name);
     }
 
-    [DebuggerDisplay("{FullPath}")]
-    public class PathDeterminer : IPathDeterminer, ITokensInFilesReplacer
+    public class TokensInFilesReplacer : ITokensInFilesReplacer
     {
-        readonly string _path;
+        private readonly IPathDeterminer pathDeterminer;
 
-        public PathDeterminer(string path)
+        public TokensInFilesReplacer(IPathDeterminer pathDeterminer)
         {
-            _path = path;
-        }
-
-        public string FullPath
-        {
-            get { return Path.GetFullPath(_path); }
+            this.pathDeterminer = pathDeterminer;
         }
 
         public void ReplaceTokens(string name)
         {
-            var startingPoint = new DirectoryInfo(FullPath);
+            var startingPoint = new DirectoryInfo(pathDeterminer.FullPath);
 
             //move all directories
             MoveAllDirectories(startingPoint, name);
@@ -51,9 +39,9 @@ namespace warmup
             foreach (var info in point.GetFiles("*.*", SearchOption.AllDirectories))
             {
                 //don't do this on exe's or dll's
-                if (new[] { ".exe", ".dll", ".pdb", ".jpg", ".png", ".gif", ".mst", ".msi", ".msm", ".gitignore", ".idx", ".pack" }.Contains(info.Extension)) continue;
+                if (new[]{".exe", ".dll", ".pdb", ".jpg", ".png", ".gif", ".mst", ".msi", ".msm", ".gitignore", ".idx", ".pack"}.Contains(info.Extension)) continue;
                 //skip the .git directory
-                if (new[] { "\\.git\\" }.Contains(info.FullName)) continue;
+                if (new[]{"\\.git\\"}.Contains(info.FullName)) continue;
 
                 //process contents
                 var contents = File.ReadAllText(info.FullName);
@@ -67,7 +55,8 @@ namespace warmup
             try
             {
                 File.WriteAllText(info.FullName, contents);
-            } catch
+            }
+            catch
             {
                 // nothing
             }
@@ -80,7 +69,6 @@ namespace warmup
                 var moveTo = file.FullName.Replace("__NAME__", name);
                 try
                 {
-
                     file.MoveTo(moveTo);
                 }
                 catch (Exception)
@@ -88,13 +76,12 @@ namespace warmup
                     Console.WriteLine("Trying to move '{0}' to '{1}'", file.FullName, moveTo);
                     throw;
                 }
-
             }
         }
 
         private void MoveAllDirectories(DirectoryInfo dir, string name)
         {
-            DirectoryInfo workingDirectory = dir;
+            var workingDirectory = dir;
             if (workingDirectory.Name.Contains("__NAME__"))
             {
                 var newFolderName = dir.Name.Replace("__NAME__", name);

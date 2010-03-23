@@ -24,7 +24,7 @@ namespace warmup
 
         private static ITokensInFilesReplacer CreateTokenFileReplacer(WarmupTemplateRequest warmupTemplateRequest)
         {
-            return new PathDeterminer(warmupTemplateRequest.TokenReplaceValue);
+            return new TokensInFilesReplacer(new PathDeterminer(warmupTemplateRequest.TokenReplaceValue));
         }
 
         private static IPathDeterminer CreatePathDeterminer(WarmupTemplateRequest warmupTemplateRequest)
