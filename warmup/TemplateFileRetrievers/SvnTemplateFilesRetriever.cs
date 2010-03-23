@@ -6,13 +6,13 @@ namespace warmup.TemplateFileRetrievers
 {
     public class SvnTemplateFilesRetriever : ITemplateFilesRetriever
     {
+        private readonly IWarmupConfigurationProvider warmupConfigurationProvider;
         private readonly IPathDeterminer pathDeterminer;
-        private readonly WarmupConfiguration configuration;
 
         public SvnTemplateFilesRetriever(IWarmupConfigurationProvider warmupConfigurationProvider, IPathDeterminer pathDeterminer)
         {
+            this.warmupConfigurationProvider = warmupConfigurationProvider;
             this.pathDeterminer = pathDeterminer;
-            configuration = warmupConfigurationProvider.GetWarmupConfiguration();
         }
 
         public bool CanRetrieve()
@@ -22,12 +22,17 @@ namespace warmup.TemplateFileRetrievers
 
         private bool TheSourceControlTypeIsSvn()
         {
-            return string.Compare(configuration.SourceControlType, "Svn", true) == 0;
+            return string.Compare(GetConfiguration().SourceControlType, "Svn", true) == 0;
+        }
+
+        private WarmupConfiguration GetConfiguration()
+        {
+            return warmupConfigurationProvider.GetWarmupConfiguration();
         }
 
         public void RetrieveFiles(WarmupTemplateRequest warmupTemplateRequest)
         {
-            var sourceLocation = new Uri(configuration.SourceControlWarmupLocation + warmupTemplateRequest.TemplateName);
+            var sourceLocation = new Uri(GetConfiguration().SourceControlWarmupLocation + warmupTemplateRequest.TemplateName);
 
             Console.WriteLine("svn exporting to: {0}", pathDeterminer.FullPath);
 

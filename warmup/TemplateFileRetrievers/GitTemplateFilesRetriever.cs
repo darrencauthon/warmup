@@ -6,13 +6,13 @@ namespace warmup.TemplateFileRetrievers
 {
     public class GitTemplateFilesRetriever : ITemplateFilesRetriever
     {
+        private readonly IWarmupConfigurationProvider warmupConfigurationProvider;
         private readonly IPathDeterminer pathDeterminer;
-        private readonly WarmupConfiguration configuration;
 
         public GitTemplateFilesRetriever(IWarmupConfigurationProvider warmupConfigurationProvider, IPathDeterminer pathDeterminer)
         {
+            this.warmupConfigurationProvider = warmupConfigurationProvider;
             this.pathDeterminer = pathDeterminer;
-            configuration = warmupConfigurationProvider.GetWarmupConfiguration();
         }
 
         public bool CanRetrieve()
@@ -22,7 +22,12 @@ namespace warmup.TemplateFileRetrievers
 
         private bool TheSourceControlTypeIsGit()
         {
-            return string.Compare(configuration.SourceControlType, "Git", true) == 0;
+            return string.Compare(GetConfiguration().SourceControlType, "Git", true) == 0;
+        }
+
+        private WarmupConfiguration GetConfiguration()
+        {
+            return warmupConfigurationProvider.GetWarmupConfiguration();
         }
 
         public void RetrieveFiles(WarmupTemplateRequest warmupTemplateRequest)
@@ -65,7 +70,7 @@ namespace warmup.TemplateFileRetrievers
             return piecesOfPath[0] + ".git";
         }
 
-        private ProcessStartInfo CreateProcessStartInfo(string fullPath, string sourceLocationToGit)
+        private static ProcessStartInfo CreateProcessStartInfo(string fullPath, string sourceLocationToGit)
         {
             var psi = new ProcessStartInfo("cmd",
                                            string.Format(" /c git clone {0} {1}", sourceLocationToGit, fullPath));
@@ -81,7 +86,7 @@ namespace warmup.TemplateFileRetrievers
         {
             var separationCharacters = new[]{".git"};
 
-            var sourceLocation = new Uri(configuration.SourceControlWarmupLocation + warmupTemplateRequest.TemplateName);
+            var sourceLocation = new Uri(GetConfiguration().SourceControlWarmupLocation + warmupTemplateRequest.TemplateName);
             return sourceLocation.ToString().Split(separationCharacters, StringSplitOptions.RemoveEmptyEntries);
         }
     }
