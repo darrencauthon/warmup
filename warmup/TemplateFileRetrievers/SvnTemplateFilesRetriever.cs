@@ -36,12 +36,7 @@ namespace warmup.TemplateFileRetrievers
 
             Console.WriteLine("svn exporting to: {0}", pathDeterminer.FullPath);
 
-            var psi = new ProcessStartInfo("svn", string.Format("export {0} {1}", sourceLocation, pathDeterminer.FullPath));
-
-            psi.UseShellExecute = false;
-            psi.CreateNoWindow = true;
-            psi.RedirectStandardOutput = true;
-            psi.RedirectStandardError = true;
+            var psi = CreateProcessStartInfo(sourceLocation);
 
             //todo: better error handling
             Console.WriteLine("Running: {0} {1}", psi.FileName, psi.Arguments);
@@ -54,6 +49,18 @@ namespace warmup.TemplateFileRetrievers
 
             Console.WriteLine(output);
             Console.WriteLine(error);
+        }
+
+        private ProcessStartInfo CreateProcessStartInfo(Uri sourceLocation)
+        {
+            var processStartInfo = new ProcessStartInfo("svn", string.Format("export {0} {1}", sourceLocation, pathDeterminer.FullPath));
+
+            processStartInfo.UseShellExecute = false;
+            processStartInfo.CreateNoWindow = true;
+            processStartInfo.RedirectStandardOutput = true;
+            processStartInfo.RedirectStandardError = true;
+
+            return processStartInfo;
         }
     }
 }
