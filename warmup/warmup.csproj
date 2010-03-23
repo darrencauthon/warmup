@@ -54,7 +54,6 @@
     <Compile Include="settings\IWarmupConfigurationProvider.cs" />
     <Compile Include="settings\WarmupConfiguration.cs" />
     <Compile Include="TemplateFileRetrievers\SvnTemplateFilesRetriever.cs" />
-    <Compile Include="TargetDir.cs" />
     <Compile Include="TokensInFilesReplacer.cs" />
   </ItemGroup>
   <ItemGroup>
