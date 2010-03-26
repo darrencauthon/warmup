@@ -65,7 +65,7 @@ namespace warmup.TemplateFileRetrievers
         private string GetTheGitSourceLocation(WarmupTemplateRequest warmupTemplateRequest)
         {
             var piecesOfPath = GetThePiecesOfPath(warmupTemplateRequest);
-            if (piecesOfPath.Length > 0)
+            if (piecesOfPath.Length == 0)
                 return string.Empty;
             return piecesOfPath[0] + ".git";
         }
