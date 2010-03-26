@@ -11,16 +11,16 @@ namespace warmup
     [DebuggerDisplay("{FullPath}")]
     public class PathDeterminer : IPathDeterminer
     {
-        private readonly string _path;
+        private readonly string path;
 
         public PathDeterminer(string path)
         {
-            _path = path;
+            this.path = path;
         }
 
         public string FullPath
         {
-            get { return Path.GetFullPath(_path); }
+            get { return Path.GetFullPath(path); }
         }
     }
 }

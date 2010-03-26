@@ -1,5 +1,3 @@
-using System;
-
 namespace warmup
 {
     public interface ITemplateFilesRetriever

@@ -34,7 +34,7 @@ namespace warmup
             ReplaceTokensInTheFiles(startingPoint, name);
         }
 
-        private void ReplaceTokensInTheFiles(DirectoryInfo point, string name)
+        private static void ReplaceTokensInTheFiles(DirectoryInfo point, string name)
         {
             foreach (var info in point.GetFiles("*.*", SearchOption.AllDirectories))
             {
@@ -50,19 +50,19 @@ namespace warmup
             }
         }
 
-        private static void AttemptToSaveTheContentsOfTheFile(FileInfo info, string contents)
+        private static void AttemptToSaveTheContentsOfTheFile(FileSystemInfo info, string contents)
         {
             try
             {
                 File.WriteAllText(info.FullName, contents);
             }
-            catch
+            catch (Exception)
             {
-                // nothing
+                // move on if it fails :(
             }
         }
 
-        private void MoveAllFiles(DirectoryInfo point, string name)
+        private static void MoveAllFiles(DirectoryInfo point, string name)
         {
             foreach (var file in point.GetFiles("*.*", SearchOption.AllDirectories))
             {
@@ -79,23 +79,26 @@ namespace warmup
             }
         }
 
-        private void MoveAllDirectories(DirectoryInfo dir, string name)
+        private static void MoveAllDirectories(DirectoryInfo dir, string name)
         {
             var workingDirectory = dir;
             if (workingDirectory.Name.Contains("__NAME__"))
             {
                 var newFolderName = dir.Name.Replace("__NAME__", name);
-                var moveTo = Path.Combine(dir.Parent.FullName, newFolderName);
+                if (dir.Parent != null)
+                {
+                    var moveTo = Path.Combine(dir.Parent.FullName, newFolderName);
 
-                try
-                {
-                    workingDirectory.MoveTo(moveTo);
-                    workingDirectory = new DirectoryInfo(moveTo);
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine("Trying to move '{0}' to '{1}'", workingDirectory.FullName, moveTo);
-                    throw;
+                    try
+                    {
+                        workingDirectory.MoveTo(moveTo);
+                        workingDirectory = new DirectoryInfo(moveTo);
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Trying to move '{0}' to '{1}'", workingDirectory.FullName, moveTo);
+                        throw;
+                    }
                 }
             }
 

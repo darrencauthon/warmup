@@ -43,7 +43,7 @@ namespace warmup.TemplateFileRetrievers
                 //todo: better error handling
                 Console.WriteLine("Running: {0} {1}", psi.FileName, psi.Arguments);
 
-                string output, error = "";
+                string output, error;
                 using (var p = Process.Start(psi))
                 {
                     output = p.StandardOutput.ReadToEnd();
