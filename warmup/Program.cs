@@ -8,12 +8,17 @@ namespace warmup
     {
         private static void Main(string[] args)
         {
-            var container = CreateTheContainer();
-            var bus = new ApplicationBus(new MessageHandlerFactory(container)){
-                                                                                  typeof (AttemptToExecuteWarmupMessageHandler)
-                                                                              };
+            var bus = CreateTheApplicationBus();
 
             bus.Send(new ApplicationRanMessage{CommandLineArguments = args});
+        }
+
+        private static ApplicationBus CreateTheApplicationBus()
+        {
+            var container = CreateTheContainer();
+            return new ApplicationBus(new MessageHandlerFactory(container)){
+                                                                               typeof (AttemptToExecuteWarmupMessageHandler)
+                                                                           };
         }
 
         private static IContainer CreateTheContainer()
