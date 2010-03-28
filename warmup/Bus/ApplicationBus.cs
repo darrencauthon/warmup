@@ -33,11 +33,9 @@ namespace warmup.Bus
                 handler.Handle(eventMessage);
         }
 
-// ReSharper disable ParameterHidesMember
-        public void SetMessageHandlerFactory(IMessageHandlerFactory factory)
-// ReSharper restore ParameterHidesMember
+        public void SetMessageHandlerFactory(IMessageHandlerFactory messageHandlerFactory)
         {
-            this.factory = factory;
+            factory = messageHandlerFactory;
         }
 
         public IEnumerable<IMessageHandler> GetHandlersForType(IEventMessage message)
