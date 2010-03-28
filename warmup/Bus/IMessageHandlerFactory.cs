@@ -1,4 +1,5 @@
 ﻿using System;
+using StructureMap;
 
 namespace warmup.Bus
 {
@@ -9,9 +10,16 @@ namespace warmup.Bus
 
     public class MessageHandlerFactory : IMessageHandlerFactory
     {
+        private readonly IContainer container;
+
+        public MessageHandlerFactory(IContainer container)
+        {
+            this.container = container;
+        }
+
         public IMessageHandler Create(Type type)
         {
-            return (IMessageHandler)Activator.CreateInstance(type);
+            return (IMessageHandler)container.GetInstance(type);
         }
     }
 }

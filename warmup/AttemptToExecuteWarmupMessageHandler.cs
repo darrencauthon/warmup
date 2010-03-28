@@ -19,14 +19,14 @@ namespace warmup
             return GetWarmupTemplateRequest(message).IsValid;
         }
 
-        private WarmupTemplateRequest GetWarmupTemplateRequest(ApplicationRanMessage message)
-        {
-            return warmupTemplateRequestParser.GetArguments(message.CommandLineArguments);
-        }
-
         public override void Handle(ApplicationRanMessage message)
         {
             warmupTemplateRequestExecuter.Execute(GetWarmupTemplateRequest(message));
+        }
+
+        private WarmupTemplateRequest GetWarmupTemplateRequest(ApplicationRanMessage message)
+        {
+            return warmupTemplateRequestParser.GetArguments(message.CommandLineArguments);
         }
     }
 }

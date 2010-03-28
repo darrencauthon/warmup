@@ -1,7 +1,6 @@
-using System;
-using System.Linq;
-using warmup.settings;
-using warmup.TemplateFileRetrievers;
+using StructureMap;
+using StructureMap.Configuration.DSL;
+using warmup.Bus;
 
 namespace warmup
 {
@@ -9,61 +8,27 @@ namespace warmup
     {
         private static void Main(string[] args)
         {
-            var warmupTemplateRequest = GetWarmupTemplateRequest(args);
+            var container = CreateTheContainer();
+            var bus = new ApplicationBus(new MessageHandlerFactory(container)){
+                                                                                  typeof (AttemptToExecuteWarmupMessageHandler)
+                                                                              };
 
-            RetrieveTheTemplateFiles(warmupTemplateRequest);
-
-            ReplaceTokensInTheTemplateFiles(warmupTemplateRequest);
+            bus.Send(new ApplicationRanMessage{CommandLineArguments = args});
         }
 
-        private static void ReplaceTokensInTheTemplateFiles(WarmupTemplateRequest warmupTemplateRequest)
+        private static IContainer CreateTheContainer()
         {
-            Console.WriteLine("replacing tokens");
-            (CreateTokenFileReplacer(warmupTemplateRequest)).ReplaceTokens(warmupTemplateRequest.TokenReplaceValue);
-        }
+            var registry = new Registry();
 
-        private static ITokensInFilesReplacer CreateTokenFileReplacer(WarmupTemplateRequest warmupTemplateRequest)
-        {
-            return new TokensInFilesReplacer(new PathDeterminer(warmupTemplateRequest.TokenReplaceValue));
-        }
+            registry.Scan(x =>
+                              {
+                                  x.TheCallingAssembly();
+                                  x.RegisterConcreteTypesAgainstTheFirstInterface();
+                              });
 
-        private static IPathDeterminer CreatePathDeterminer(WarmupTemplateRequest warmupTemplateRequest)
-        {
-            return new PathDeterminer(warmupTemplateRequest.TokenReplaceValue);
-        }
+            var test = new Container(registry);
 
-        private static void RetrieveTheTemplateFiles(WarmupTemplateRequest warmupTemplateRequest)
-        {
-            GetTemplateFileRetrievers(CreatePathDeterminer(warmupTemplateRequest))
-                .ToList()
-                .ForEach(retriever =>
-                             {
-                                 if (retriever.CanRetrieve())
-                                     retriever.RetrieveFiles(warmupTemplateRequest);
-                             });
-        }
-
-        private static ITemplateFilesRetriever[] GetTemplateFileRetrievers(IPathDeterminer pathDeterminer)
-        {
-            var warmupConfigurationProvider = GetTheWarmupConfigurationProvider();
-            return new ITemplateFilesRetriever[]{
-                                                    new GitTemplateFilesRetriever(warmupConfigurationProvider, pathDeterminer),
-                                                    new SvnTemplateFilesRetriever(warmupConfigurationProvider, pathDeterminer)
-                                                };
-        }
-
-        private static IWarmupConfigurationProvider GetTheWarmupConfigurationProvider()
-        {
-            return new ConfigurationFileWarmupConfigurationProvider();
-        }
-
-        private static WarmupTemplateRequest GetWarmupTemplateRequest(string[] args)
-        {
-            var parser = new WarmupTemplateRequestParser();
-            var arguments = parser.GetArguments(args);
-            if (arguments.IsValid == false)
-                throw new ArgumentException("Command line arguments are not valid");
-            return arguments;
+            return test;
         }
     }
 }
