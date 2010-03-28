@@ -2,13 +2,13 @@
 
 namespace warmup
 {
-    public class AttemptToExecuteWarmupMessageHandler : MessageHandler<ApplicationRanMessage>
+    public class WarmupRequestFromCommandLineHandler : MessageHandler<ApplicationRanMessage>
     {
         private readonly IWarmupTemplateRequestParser warmupTemplateRequestParser;
         private readonly IWarmupTemplateRequestExecuter warmupTemplateRequestExecuter;
 
-        public AttemptToExecuteWarmupMessageHandler(IWarmupTemplateRequestParser warmupTemplateRequestParser,
-                                                    IWarmupTemplateRequestExecuter warmupTemplateRequestExecuter)
+        public WarmupRequestFromCommandLineHandler(IWarmupTemplateRequestParser warmupTemplateRequestParser,
+                                                   IWarmupTemplateRequestExecuter warmupTemplateRequestExecuter)
         {
             this.warmupTemplateRequestParser = warmupTemplateRequestParser;
             this.warmupTemplateRequestExecuter = warmupTemplateRequestExecuter;

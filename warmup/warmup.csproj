@@ -51,7 +51,7 @@
     <Compile Include="Bus\IEventMessage.cs" />
     <Compile Include="Bus\MessageHandler.cs" />
     <Compile Include="Bus\MessageHandlerFactory.cs" />
-    <Compile Include="CommandLineArgumentParser.cs" />
+    <Compile Include="WarmupTemplateRequest.cs" />
     <Compile Include="ApplicationRanMessage.cs" />
     <Compile Include="IWarmupTemplateRequestExecuter.cs" />
     <Compile Include="PathDeterminer.cs" />
@@ -64,7 +64,7 @@
     <Compile Include="settings\IWarmupConfigurationProvider.cs" />
     <Compile Include="settings\WarmupConfiguration.cs" />
     <Compile Include="TemplateFileRetrievers\SvnTemplateFilesRetriever.cs" />
-    <Compile Include="AttemptToExecuteWarmupMessageHandler.cs" />
+    <Compile Include="WarmupRequestFromCommandLineHandler.cs" />
     <Compile Include="TokensInFilesReplacer.cs" />
     <Compile Include="WarmupTemplateRequestExecuter.cs" />
     <Compile Include="WarmupTemplateRequestParser.cs" />

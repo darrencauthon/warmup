@@ -17,7 +17,7 @@ namespace warmup
         {
             var container = CreateTheContainer();
             return new ApplicationBus(new MessageHandlerFactory(container)){
-                                                                               typeof (AttemptToExecuteWarmupMessageHandler)
+                                                                               typeof (WarmupRequestFromCommandLineHandler)
                                                                            };
         }
 

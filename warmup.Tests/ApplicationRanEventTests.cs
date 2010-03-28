@@ -20,7 +20,7 @@ namespace warmup.Tests
         {
             var message = GetValidRequestMessage();
 
-            var handler = mocker.Resolve<AttemptToExecuteWarmupMessageHandler>();
+            var handler = mocker.Resolve<WarmupRequestFromCommandLineHandler>();
 
             var result = handler.CanHandle(message);
             Assert.IsTrue(result);
@@ -31,7 +31,7 @@ namespace warmup.Tests
         {
             var message = GetInvalidRequestMessage();
 
-            var handler = mocker.Resolve<AttemptToExecuteWarmupMessageHandler>();
+            var handler = mocker.Resolve<WarmupRequestFromCommandLineHandler>();
 
             var result = handler.CanHandle(message);
             Assert.IsFalse(result);
@@ -45,7 +45,7 @@ namespace warmup.Tests
             var message = SetWarmupTemplateRequestParserToReturn(request);
 
             var executer = new ExecuterThatTracksTheRequestThatWasPassedToExecute();
-            var handler = new AttemptToExecuteWarmupMessageHandler(mocker.GetMock<IWarmupTemplateRequestParser>().Object,
+            var handler = new WarmupRequestFromCommandLineHandler(mocker.GetMock<IWarmupTemplateRequestParser>().Object,
                                                                    executer);
 
             handler.Handle(message);
