@@ -43,6 +43,11 @@
     <Compile Include="..\SolutionVersion.cs">
       <Link>SolutionVersion.cs</Link>
     </Compile>
+    <Compile Include="Bus\ApplicationBus.cs" />
+    <Compile Include="Bus\IApplicationBus.cs" />
+    <Compile Include="Bus\IEventMessage.cs" />
+    <Compile Include="Bus\IMessageHandler.cs" />
+    <Compile Include="Bus\IMessageHandlerFactory.cs" />
     <Compile Include="CommandLineArgumentParser.cs" />
     <Compile Include="PathDeterminer.cs" />
     <Compile Include="TemplateFileRetrievers\GitTemplateFilesRetriever.cs" />
