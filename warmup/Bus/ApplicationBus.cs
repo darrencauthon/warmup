@@ -23,10 +23,8 @@ namespace warmup.Bus
 
         public void Send(IEventMessage eventMessage)
         {
-            foreach (var handler in GetHandlersForType(eventMessage.GetType()))
-            {
+            foreach (var handler in GetHandlersForType(eventMessage))
                 handler.Handle(eventMessage);
-            }
         }
 
 // ReSharper disable ParameterHidesMember
@@ -36,15 +34,14 @@ namespace warmup.Bus
             this.factory = factory;
         }
 
-        public IEnumerable<IMessageHandler> GetHandlersForType(Type type)
+        public IEnumerable<IMessageHandler> GetHandlersForType(IEventMessage message)
         {
             foreach (var handlerType in this)
             {
+                var type = message.GetType();
                 var handler = factory.Create(handlerType);
-                if (handler.CanHandle(type))
-                {
+                if (handler.CanHandle(type, message))
                     yield return handler;
-                }
             }
         }
     }

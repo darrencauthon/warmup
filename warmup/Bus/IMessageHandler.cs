@@ -5,7 +5,7 @@ namespace warmup.Bus
     public interface IMessageHandler
     {
         void Handle(object message);
-        bool CanHandle(Type type);
+        bool CanHandle(Type type, object message);
     }
 
     public interface IMessageHandler<TMessage> : IMessageHandler where TMessage : IEventMessage
@@ -22,9 +22,24 @@ namespace warmup.Bus
             Handle((TMessage)message);
         }
 
-        public virtual bool CanHandle(Type type)
+        public virtual bool CanHandle(Type type, object message)
         {
-            return type == typeof (TMessage);
+            return CanHandle(type, (TMessage)message);
+        }
+
+        public virtual bool CanHandle(Type type, TMessage message)
+        {
+            return type == typeof (TMessage) && CanHandle(message);
+        }
+
+        public virtual bool CanHandle(object message)
+        {
+            return CanHandle((TMessage)message);
+        }
+
+        public virtual bool CanHandle(TMessage message)
+        {
+            return true;
         }
     }
 }

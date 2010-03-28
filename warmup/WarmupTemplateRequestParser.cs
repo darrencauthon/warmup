@@ -2,7 +2,12 @@ using System.Collections.Generic;
 
 namespace warmup
 {
-    public class WarmupTemplateRequestParser
+    public interface IWarmupTemplateRequestParser
+    {
+        WarmupTemplateRequest GetArguments(string[] args);
+    }
+
+    public class WarmupTemplateRequestParser : IWarmupTemplateRequestParser
     {
         public WarmupTemplateRequest GetArguments(string[] args)
         {
