@@ -48,10 +48,9 @@
       <Link>SolutionVersion.cs</Link>
     </Compile>
     <Compile Include="Bus\ApplicationBus.cs" />
-    <Compile Include="Bus\IApplicationBus.cs" />
     <Compile Include="Bus\IEventMessage.cs" />
-    <Compile Include="Bus\IMessageHandler.cs" />
-    <Compile Include="Bus\IMessageHandlerFactory.cs" />
+    <Compile Include="Bus\MessageHandler.cs" />
+    <Compile Include="Bus\MessageHandlerFactory.cs" />
     <Compile Include="CommandLineArgumentParser.cs" />
     <Compile Include="ApplicationRanMessage.cs" />
     <Compile Include="IWarmupTemplateRequestExecuter.cs" />

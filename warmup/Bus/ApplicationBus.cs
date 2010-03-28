@@ -3,6 +3,12 @@ using System.Collections.Generic;
 
 namespace warmup.Bus
 {
+    public interface IApplicationBus : IList<Type>
+    {
+        void Send(IEventMessage eventMessage);
+        void SetMessageHandlerFactory(IMessageHandlerFactory factory);
+    }
+
     public class ApplicationBus : List<Type>, IApplicationBus
     {
         public new void Add(Type type)
