@@ -20,7 +20,7 @@ namespace warmup.Bus
 
         public virtual bool CanHandle(TMessage message)
         {
-            return false;
+            return true;
         }
 
     }
