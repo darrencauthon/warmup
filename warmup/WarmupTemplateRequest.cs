@@ -1,6 +1,8 @@
+using warmup.Bus;
+
 namespace warmup
 {
-    public class WarmupTemplateRequest
+    public class WarmupTemplateRequest : IEventMessage
     {
         public bool IsValid { get; set; }
 

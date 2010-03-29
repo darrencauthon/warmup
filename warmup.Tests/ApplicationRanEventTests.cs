@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using AutoMoq;
 using NUnit.Framework;
+using warmup.Bus;
 
 namespace warmup.Tests
 {
     [TestFixture]
-    public class ApplicationRanEventTests
+    public class WarmupRequestFromCommandLineHandlerTests
     {
         private AutoMoqer mocker;
 
@@ -44,12 +47,11 @@ namespace warmup.Tests
 
             var message = SetWarmupTemplateRequestParserToReturn(request);
 
-            var executer = new ExecuterThatTracksTheRequestThatWasPassedToExecute();
-            var handler = new WarmupRequestFromCommandLineHandler(mocker.GetMock<IWarmupTemplateRequestParser>().Object,
-                                                                   executer);
+            var testBus = new TestBus();
+            var handler = new WarmupRequestFromCommandLineHandler(mocker.GetMock<IWarmupTemplateRequestParser>().Object, testBus);
 
             handler.Handle(message);
-            Assert.AreSame(request, executer.RequestThatWasPassed);
+            Assert.AreSame(request, testBus.EventMessage);
         }
 
         private ApplicationRanMessage SetWarmupTemplateRequestParserToReturn(WarmupTemplateRequest request)
@@ -94,16 +96,28 @@ namespace warmup.Tests
             return new ApplicationRanMessage{CommandLineArguments = new string[]{}};
         }
 
-        private class ExecuterThatTracksTheRequestThatWasPassedToExecute : IWarmupTemplateRequestExecuter
-        {
-            public WarmupTemplateRequest RequestThatWasPassed { get; set; }
+        #region test bus
 
-            public void Execute(WarmupTemplateRequest warmupTemplateRequest)
+        private class TestBus : IApplicationBus
+        {
+            public object EventMessage { get; private set; }
+
+            public void Send(IEventMessage eventMessage)
             {
-                if (RequestThatWasPassed != null)
-                    throw new Exception("Should only be called once");
-                RequestThatWasPassed = warmupTemplateRequest;
+                EventMessage = eventMessage;
+            }
+
+            public void Add<T>(Type handlerType)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Send<T>(T eventMessage)
+            {
+                EventMessage = eventMessage;
             }
         }
+
+        #endregion
     }
 }

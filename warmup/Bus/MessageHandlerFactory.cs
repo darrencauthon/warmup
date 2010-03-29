@@ -5,7 +5,7 @@ namespace warmup.Bus
 {
     public interface IMessageHandlerFactory
     {
-        IMessageHandler Create(Type type);
+        IMessageHandler<T> Create<T>(Type type);
     }
 
     public class MessageHandlerFactory : IMessageHandlerFactory
@@ -17,9 +17,9 @@ namespace warmup.Bus
             this.container = container;
         }
 
-        public IMessageHandler Create(Type type)
+        public IMessageHandler<T> Create<T>(Type type)
         {
-            return (IMessageHandler)container.GetInstance(type);
+            return (IMessageHandler<T>)container.GetInstance(type);
         }
     }
 }

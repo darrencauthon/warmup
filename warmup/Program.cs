@@ -10,15 +10,21 @@ namespace warmup
         {
             var bus = CreateTheApplicationBus();
 
-            bus.Send(new ApplicationRanMessage{CommandLineArguments = args});
+            var message = new ApplicationRanMessage { CommandLineArguments = args };
+
+            bus.Send(message);
         }
 
-        private static ApplicationBus CreateTheApplicationBus()
+        private static IApplicationBus CreateTheApplicationBus()
         {
             var container = CreateTheContainer();
-            return new ApplicationBus(new MessageHandlerFactory(container)){
-                                                                               typeof (WarmupRequestFromCommandLineHandler)
-                                                                           };
+
+
+            var bus = container.GetInstance<IApplicationBus>();
+            bus.Add<ApplicationRanMessage>(typeof(IWarmupRequestFromCommandLineHandler));
+            bus.Add<WarmupTemplateRequest>(typeof(IWarmupTemplateRequestExecuter));
+
+            return bus;
         }
 
         private static IContainer CreateTheContainer()
@@ -28,8 +34,11 @@ namespace warmup
             registry.Scan(x =>
                               {
                                   x.TheCallingAssembly();
-                                  x.RegisterConcreteTypesAgainstTheFirstInterface();
+                                  x.SingleImplementationsOfInterface();
                               });
+
+            registry.For<IApplicationBus>()
+                .Singleton();
 
             var test = new Container(registry);
 

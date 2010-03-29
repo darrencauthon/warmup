@@ -53,7 +53,6 @@
     <Compile Include="Bus\MessageHandlerFactory.cs" />
     <Compile Include="WarmupTemplateRequest.cs" />
     <Compile Include="ApplicationRanMessage.cs" />
-    <Compile Include="IWarmupTemplateRequestExecuter.cs" />
     <Compile Include="PathDeterminer.cs" />
     <Compile Include="TemplateFileRetrievers\GitTemplateFilesRetriever.cs" />
     <Compile Include="ITemplateFilesRetriever.cs" />

@@ -1,13 +1,23 @@
 ﻿using System;
 using System.Linq;
+using warmup.Bus;
 using warmup.settings;
 using warmup.TemplateFileRetrievers;
 
 namespace warmup
 {
-    public class WarmupTemplateRequestExecuter : IWarmupTemplateRequestExecuter
+    public interface IWarmupTemplateRequestExecuter : IMessageHandler<WarmupTemplateRequest>
     {
-        public void Execute(WarmupTemplateRequest warmupTemplateRequest)
+    }
+
+    public class WarmupTemplateRequestExecuter : MessageHandler<WarmupTemplateRequest>, IWarmupTemplateRequestExecuter
+    {
+        public override bool CanHandle(WarmupTemplateRequest message)
+        {
+            return message.IsValid;
+        }
+
+        public override void Handle(WarmupTemplateRequest warmupTemplateRequest)
         {
             RetrieveTheTemplateFiles(warmupTemplateRequest);
 

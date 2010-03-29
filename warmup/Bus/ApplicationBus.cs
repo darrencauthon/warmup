@@ -1,52 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace warmup.Bus
 {
-    public interface IApplicationBus : IList<Type>
+    public interface IApplicationBus
     {
-        void Send(IEventMessage eventMessage);
-        void SetMessageHandlerFactory(IMessageHandlerFactory factory);
+        void Add<T>(Type handlerType);
+        void Send<T>(T eventMessage);
     }
 
     public class ApplicationBus : List<Type>, IApplicationBus
     {
-        public new void Add(Type type)
-        {
-            if (type.GetInterface(typeof (IMessageHandler).Name) == null)
-            {
-                throw new InvalidOperationException(string.Format("Type {0} must implement the IMessageHandler interface", type.Name));
-            }
-            base.Add(type);
-        }
-
-        private IMessageHandlerFactory factory;
+        private readonly IMessageHandlerFactory factory;
+        private readonly IList<TypeRegistration> registeredTypes = new List<TypeRegistration>();
 
         public ApplicationBus(IMessageHandlerFactory factory)
         {
             this.factory = factory;
         }
 
-        public void Send(IEventMessage eventMessage)
+        public void Add<T>(Type handlerType)
         {
-            foreach (var handler in GetHandlersForType(eventMessage))
-                handler.Handle(eventMessage);
+            registeredTypes.Add(new TypeRegistration(handlerType, typeof (T)));
         }
 
-        public void SetMessageHandlerFactory(IMessageHandlerFactory messageHandlerFactory)
+        public void Send<T>(T eventMessage)
         {
-            factory = messageHandlerFactory;
+            foreach (var handler in GetHandlersForType<T>())
+                if (handler.CanHandle(eventMessage))
+                    handler.Handle(eventMessage);
         }
 
-        public IEnumerable<IMessageHandler> GetHandlersForType(IEventMessage message)
+        public IEnumerable<IMessageHandler<T>> GetHandlersForType<T>()
         {
-            foreach (var handlerType in this)
-            {
-                var type = message.GetType();
-                var handler = factory.Create(handlerType);
-                if (handler.CanHandle(type, message))
-                    yield return handler;
-            }
+            return from item in registeredTypes
+                   where item.TypeOfEvent == typeof (T)
+                   select factory.Create<T>(item.TypeOfHandler);
         }
+    }
+
+    public class TypeRegistration
+    {
+        public TypeRegistration(Type typeofHandler, Type typeofEvent)
+        {
+            TypeOfHandler = typeofHandler;
+            TypeOfEvent = typeofEvent;
+        }
+
+        public Type TypeOfHandler { get; private set; }
+        public Type TypeOfEvent { get; private set; }
     }
 }

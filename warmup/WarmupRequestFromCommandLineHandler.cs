@@ -2,16 +2,20 @@
 
 namespace warmup
 {
-    public class WarmupRequestFromCommandLineHandler : MessageHandler<ApplicationRanMessage>
+    public interface IWarmupRequestFromCommandLineHandler : IMessageHandler<ApplicationRanMessage>
+    {
+    }
+
+    public class WarmupRequestFromCommandLineHandler : MessageHandler<ApplicationRanMessage>, IWarmupRequestFromCommandLineHandler
     {
         private readonly IWarmupTemplateRequestParser warmupTemplateRequestParser;
-        private readonly IWarmupTemplateRequestExecuter warmupTemplateRequestExecuter;
+        private readonly IApplicationBus bus;
 
         public WarmupRequestFromCommandLineHandler(IWarmupTemplateRequestParser warmupTemplateRequestParser,
-                                                   IWarmupTemplateRequestExecuter warmupTemplateRequestExecuter)
+                                                   IApplicationBus bus)
         {
             this.warmupTemplateRequestParser = warmupTemplateRequestParser;
-            this.warmupTemplateRequestExecuter = warmupTemplateRequestExecuter;
+            this.bus = bus;
         }
 
         public override bool CanHandle(ApplicationRanMessage message)
@@ -21,7 +25,7 @@ namespace warmup
 
         public override void Handle(ApplicationRanMessage message)
         {
-            warmupTemplateRequestExecuter.Execute(GetWarmupTemplateRequest(message));
+            bus.Send(warmupTemplateRequestParser.GetArguments(message.CommandLineArguments));
         }
 
         private WarmupTemplateRequest GetWarmupTemplateRequest(ApplicationRanMessage message)
