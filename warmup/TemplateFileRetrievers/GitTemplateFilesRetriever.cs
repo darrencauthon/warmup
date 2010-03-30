@@ -1,11 +1,10 @@
 using System;
 using System.Diagnostics;
-using warmup.Bus;
 using warmup.settings;
 
 namespace warmup.TemplateFileRetrievers
 {
-    public class GitTemplateFilesRetriever : MessageHandler<RetrieveFilesMessage>
+    public class GitTemplateFilesRetriever
     {
         private readonly IWarmupConfigurationProvider warmupConfigurationProvider;
         private readonly IPathDeterminer pathDeterminer;
@@ -91,7 +90,7 @@ namespace warmup.TemplateFileRetrievers
             return sourceLocation.ToString().Split(separationCharacters, StringSplitOptions.RemoveEmptyEntries);
         }
 
-        public override void Handle(RetrieveFilesMessage message)
+        public void Handle(RetrieveFilesMessage message)
         {
             this.GetFiles(message.Request);
         }

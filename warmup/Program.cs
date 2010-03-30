@@ -1,6 +1,6 @@
+using AppBus;
 using StructureMap;
 using StructureMap.Configuration.DSL;
-using warmup.Bus;
 
 namespace warmup
 {
@@ -18,12 +18,9 @@ namespace warmup
         private static IApplicationBus CreateTheApplicationBus()
         {
             var container = CreateTheContainer();
-
-
             var bus = container.GetInstance<IApplicationBus>();
-            bus.Add<ApplicationRanMessage>(typeof(IWarmupRequestFromCommandLineHandler));
-            bus.Add<WarmupTemplateRequest>(typeof(IWarmupTemplateRequestExecuter));
-
+            bus.Add(typeof(IWarmupRequestFromCommandLineHandler));
+            bus.Add(typeof(IWarmupTemplateRequestExecuter));
             return bus;
         }
 

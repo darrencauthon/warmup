@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using AppBus;
 using AutoMoq;
 using NUnit.Framework;
-using warmup.Bus;
 
 namespace warmup.Tests
 {
@@ -16,28 +16,6 @@ namespace warmup.Tests
         public void Setup()
         {
             mocker = new AutoMoqer();
-        }
-
-        [Test]
-        public void Can_Handle_When_Warmup_Template_Request_Is_Valid()
-        {
-            var message = GetValidRequestMessage();
-
-            var handler = mocker.Resolve<WarmupRequestFromCommandLineHandler>();
-
-            var result = handler.CanHandle(message);
-            Assert.IsTrue(result);
-        }
-
-        [Test]
-        public void Cannot_Handle_When_Warmup_Template_Request_Is_Invalid()
-        {
-            var message = GetInvalidRequestMessage();
-
-            var handler = mocker.Resolve<WarmupRequestFromCommandLineHandler>();
-
-            var result = handler.CanHandle(message);
-            Assert.IsFalse(result);
         }
 
         [Test]
@@ -115,6 +93,77 @@ namespace warmup.Tests
             public void Send<T>(T eventMessage)
             {
                 EventMessage = eventMessage;
+            }
+
+            public IEnumerator<Type> GetEnumerator()
+            {
+                throw new NotImplementedException();
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+
+            public void Add(Type item)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Clear()
+            {
+                throw new NotImplementedException();
+            }
+
+            public bool Contains(Type item)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void CopyTo(Type[] array, int arrayIndex)
+            {
+                throw new NotImplementedException();
+            }
+
+            public bool Remove(Type item)
+            {
+                throw new NotImplementedException();
+            }
+
+            public int Count
+            {
+                get { throw new NotImplementedException(); }
+            }
+
+            public bool IsReadOnly
+            {
+                get { throw new NotImplementedException(); }
+            }
+
+            public int IndexOf(Type item)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Insert(int index, Type item)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void RemoveAt(int index)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Type this[int index]
+            {
+                get { throw new NotImplementedException(); }
+                set { throw new NotImplementedException(); }
+            }
+
+            public void Send(object message)
+            {
+                throw new NotImplementedException();
             }
         }
 

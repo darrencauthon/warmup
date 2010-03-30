@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AppBus, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\AppBus\AppBus.dll</HintPath>
+    </Reference>
     <Reference Include="StructureMap, Version=2.6.1.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\StructureMap\StructureMap.dll</HintPath>
@@ -47,10 +51,6 @@
     <Compile Include="..\SolutionVersion.cs">
       <Link>SolutionVersion.cs</Link>
     </Compile>
-    <Compile Include="Bus\ApplicationBus.cs" />
-    <Compile Include="Bus\IEventMessage.cs" />
-    <Compile Include="Bus\MessageHandler.cs" />
-    <Compile Include="Bus\MessageHandlerFactory.cs" />
     <Compile Include="RetrieveFilesMessage.cs" />
     <Compile Include="WarmupTemplateRequest.cs" />
     <Compile Include="ApplicationRanMessage.cs" />

@@ -1,4 +1,4 @@
-﻿using warmup.Bus;
+﻿using AppBus;
 
 namespace warmup
 {
