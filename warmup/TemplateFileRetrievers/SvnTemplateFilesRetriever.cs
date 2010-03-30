@@ -30,7 +30,7 @@ namespace warmup.TemplateFileRetrievers
             return warmupConfigurationProvider.GetWarmupConfiguration();
         }
 
-        public void RetrieveFiles(WarmupTemplateRequest warmupTemplateRequest)
+        public void Handle(WarmupTemplateRequest warmupTemplateRequest)
         {
             var sourceLocation = new Uri(GetConfiguration().SourceControlWarmupLocation + warmupTemplateRequest.TemplateName);
 

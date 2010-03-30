@@ -51,6 +51,7 @@
     <Compile Include="Bus\IEventMessage.cs" />
     <Compile Include="Bus\MessageHandler.cs" />
     <Compile Include="Bus\MessageHandlerFactory.cs" />
+    <Compile Include="RetrieveFilesMessage.cs" />
     <Compile Include="WarmupTemplateRequest.cs" />
     <Compile Include="ApplicationRanMessage.cs" />
     <Compile Include="PathDeterminer.cs" />

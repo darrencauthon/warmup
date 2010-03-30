@@ -2,7 +2,7 @@ namespace warmup
 {
     public interface ITemplateFilesRetriever
     {
-        void RetrieveFiles(WarmupTemplateRequest warmupTemplateRequest);
+        void Handle(WarmupTemplateRequest warmupTemplateRequest);
         bool CanRetrieve();
     }
 }

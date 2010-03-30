@@ -47,7 +47,7 @@ namespace warmup
                 .ForEach(retriever =>
                              {
                                  if (retriever.CanRetrieve())
-                                     retriever.RetrieveFiles(warmupTemplateRequest);
+                                     retriever.Handle(warmupTemplateRequest);
                              });
         }
 
@@ -55,7 +55,6 @@ namespace warmup
         {
             var warmupConfigurationProvider = GetTheWarmupConfigurationProvider();
             return new ITemplateFilesRetriever[]{
-                                                    new GitTemplateFilesRetriever(warmupConfigurationProvider, pathDeterminer),
                                                     new SvnTemplateFilesRetriever(warmupConfigurationProvider, pathDeterminer)
                                                 };
         }
