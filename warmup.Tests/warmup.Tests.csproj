@@ -57,9 +57,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationCommandExecuterTests.cs" />
     <Compile Include="ApplicationRanEventTests.cs" />
     <Compile Include="CommandLineArgumentParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WarmupCommandLineCallExecuterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\warmup\warmup.csproj">
