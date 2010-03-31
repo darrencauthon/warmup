@@ -83,12 +83,12 @@ namespace warmup.Tests
         {
             public object EventMessage { get; set; }
 
-            public void Send(object message)
+            public void Send<T>(T message)
             {
                 EventMessage = message;
             }
 
-            public void Add(Type type)
+            public void Add<TMessage>(Type messageHandlerType)
             {
                 throw new NotImplementedException();
             }

@@ -2,12 +2,11 @@
 
 namespace warmup
 {
-    public interface IWarmupRequestFromCommandLineHandler
+    public interface IWarmupRequestFromCommandLineHandler : IMessageHandler<ApplicationRanMessage>
     {
-        void Handle(ApplicationRanMessage message);
     }
 
-    public class WarmupRequestFromCommandLineHandler : MessageHandler<ApplicationRanMessage>, IWarmupRequestFromCommandLineHandler
+    public class WarmupRequestFromCommandLineHandler : IWarmupRequestFromCommandLineHandler
     {
         private readonly IWarmupTemplateRequestParser warmupTemplateRequestParser;
         private readonly IApplicationBus bus;
@@ -19,7 +18,7 @@ namespace warmup
             this.bus = bus;
         }
 
-        public override void Handle(ApplicationRanMessage message)
+        public void Handle(ApplicationRanMessage message)
         {
             bus.Send(warmupTemplateRequestParser.GetArguments(message.CommandLineArguments));
         }

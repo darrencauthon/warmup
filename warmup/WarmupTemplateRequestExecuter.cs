@@ -6,14 +6,13 @@ using warmup.TemplateFileRetrievers;
 
 namespace warmup
 {
-    public interface IWarmupTemplateRequestExecuter
+    public interface IWarmupTemplateRequestExecuter : IMessageHandler<WarmupTemplateRequest>
     {
-        void Handle(WarmupTemplateRequest warmupTemplateRequest);
     }
 
-    public class WarmupTemplateRequestExecuter : MessageHandler<WarmupTemplateRequest>, IWarmupTemplateRequestExecuter
+    public class WarmupTemplateRequestExecuter : IWarmupTemplateRequestExecuter
     {
-        public override void Handle(WarmupTemplateRequest warmupTemplateRequest)
+        public void Handle(WarmupTemplateRequest warmupTemplateRequest)
         {
             RetrieveTheTemplateFiles(warmupTemplateRequest);
 

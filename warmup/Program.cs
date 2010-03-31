@@ -10,7 +10,7 @@ namespace warmup
         {
             var bus = CreateTheApplicationBus();
 
-            var message = new ApplicationRanMessage { CommandLineArguments = args };
+            var message = new ApplicationRanMessage{CommandLineArguments = args};
 
             bus.Send(message);
         }
@@ -19,8 +19,8 @@ namespace warmup
         {
             var container = CreateTheContainer();
             var bus = container.GetInstance<IApplicationBus>();
-            bus.Add(typeof(IWarmupRequestFromCommandLineHandler));
-            bus.Add(typeof(IWarmupTemplateRequestExecuter));
+            bus.Add<ApplicationRanMessage>(typeof (IWarmupRequestFromCommandLineHandler));
+            bus.Add<WarmupTemplateRequest>(typeof (IWarmupTemplateRequestExecuter));
             return bus;
         }
 
