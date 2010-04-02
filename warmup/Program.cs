@@ -19,8 +19,8 @@ namespace warmup
         {
             var container = CreateTheContainer();
             var bus = container.GetInstance<IApplicationBus>();
-            bus.Add<ApplicationRanMessage>(typeof (IWarmupRequestFromCommandLineHandler));
-            bus.Add<WarmupTemplateRequest>(typeof (IWarmupTemplateRequestExecuter));
+            bus.Add(typeof (IWarmupRequestFromCommandLineHandler));
+            bus.Add(typeof (IWarmupTemplateRequestExecuter));
             return bus;
         }
 
@@ -31,11 +31,19 @@ namespace warmup
             registry.Scan(x =>
                               {
                                   x.TheCallingAssembly();
-                                  x.SingleImplementationsOfInterface();
+                                  x.WithDefaultConventions();
+                              });
+            registry.Scan(x =>
+                              {
+                                  x.AssemblyContainingType(typeof (IApplicationBus));
+                                  x.WithDefaultConventions();
                               });
 
             registry.For<IApplicationBus>()
                 .Singleton();
+
+            registry.For<IMessageHandlerFactory>()
+                .Use<StructureMapMessageHandlerFactory>();
 
             var test = new Container(registry);
 

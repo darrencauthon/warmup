@@ -88,7 +88,7 @@ namespace warmup.Tests
                 EventMessage = message;
             }
 
-            public void Add<TMessage>(Type messageHandlerType)
+            public void Add(Type messageHandlerType)
             {
                 throw new NotImplementedException();
             }

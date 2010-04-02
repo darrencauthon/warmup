@@ -54,6 +54,7 @@
     <Compile Include="ApplicationCommandExecuter.cs" />
     <Compile Include="ICommandLineCallExecuter.cs" />
     <Compile Include="RetrieveFilesMessage.cs" />
+    <Compile Include="StructureMapMessageHandlerFactory.cs" />
     <Compile Include="WarmupCommandLineCallExecuter.cs" />
     <Compile Include="WarmupTemplateRequest.cs" />
     <Compile Include="ApplicationRanMessage.cs" />
