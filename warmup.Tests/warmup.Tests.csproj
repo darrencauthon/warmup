@@ -57,8 +57,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="WarmupRequestFromCommandLineHandlerTests.cs" />
-    <Compile Include="CommandLineArgumentParserTests.cs" />
+    <Compile Include="ProcessCommandLineWarmupRequestTests.cs" />
+    <Compile Include="WarmupTemplateRequestParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

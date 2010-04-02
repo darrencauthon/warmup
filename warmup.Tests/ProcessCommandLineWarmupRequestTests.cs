@@ -7,7 +7,7 @@ using warmup.Messages;
 namespace warmup.Tests
 {
     [TestFixture]
-    public class WarmupRequestFromCommandLineHandlerTests
+    public class ProcessCommandLineWarmupRequestTests
     {
         private AutoMoqer mocker;
 
