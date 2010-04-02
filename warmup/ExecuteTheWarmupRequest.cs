@@ -1,44 +1,45 @@
 ﻿using System;
 using System.Linq;
 using AppBus;
+using warmup.Messages;
 using warmup.settings;
 using warmup.TemplateFileRetrievers;
 
 namespace warmup
 {
-    public class ExecuteTheWarmupRequest : IMessageHandler<WarmupTemplateRequest>
+    public class ExecuteTheWarmupRequest : IMessageHandler<WarmupRequestMessage>
     {
-        public void Handle(WarmupTemplateRequest warmupTemplateRequest)
+        public void Handle(WarmupRequestMessage warmupRequestMessage)
         {
-            RetrieveTheTemplateFiles(warmupTemplateRequest);
+            RetrieveTheTemplateFiles(warmupRequestMessage);
 
-            ReplaceTokensInTheTemplateFiles(warmupTemplateRequest);
+            ReplaceTokensInTheTemplateFiles(warmupRequestMessage);
         }
 
-        private static void ReplaceTokensInTheTemplateFiles(WarmupTemplateRequest warmupTemplateRequest)
+        private static void ReplaceTokensInTheTemplateFiles(WarmupRequestMessage warmupRequestMessage)
         {
             Console.WriteLine("replacing tokens");
-            (CreateTokenFileReplacer(warmupTemplateRequest)).ReplaceTokens(warmupTemplateRequest.TokenReplaceValue);
+            (CreateTokenFileReplacer(warmupRequestMessage)).ReplaceTokens(warmupRequestMessage.TokenReplaceValue);
         }
 
-        private static ITokensInFilesReplacer CreateTokenFileReplacer(WarmupTemplateRequest warmupTemplateRequest)
+        private static ITokensInFilesReplacer CreateTokenFileReplacer(WarmupRequestMessage warmupRequestMessage)
         {
-            return new TokensInFilesReplacer(new PathDeterminer(warmupTemplateRequest.TokenReplaceValue));
+            return new TokensInFilesReplacer(new PathDeterminer(warmupRequestMessage.TokenReplaceValue));
         }
 
-        private static IPathDeterminer CreatePathDeterminer(WarmupTemplateRequest warmupTemplateRequest)
+        private static IPathDeterminer CreatePathDeterminer(WarmupRequestMessage warmupRequestMessage)
         {
-            return new PathDeterminer(warmupTemplateRequest.TokenReplaceValue);
+            return new PathDeterminer(warmupRequestMessage.TokenReplaceValue);
         }
 
-        private static void RetrieveTheTemplateFiles(WarmupTemplateRequest warmupTemplateRequest)
+        private static void RetrieveTheTemplateFiles(WarmupRequestMessage warmupRequestMessage)
         {
-            GetTemplateFileRetrievers(CreatePathDeterminer(warmupTemplateRequest))
+            GetTemplateFileRetrievers(CreatePathDeterminer(warmupRequestMessage))
                 .ToList()
                 .ForEach(retriever =>
                              {
                                  if (retriever.CanRetrieveTheFiles())
-                                     retriever.RetrieveTheFiles(warmupTemplateRequest);
+                                     retriever.RetrieveTheFiles(warmupRequestMessage);
                              });
         }
 

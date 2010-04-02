@@ -1,8 +1,8 @@
 using AppBus;
 
-namespace warmup
+namespace warmup.Messages
 {
-    public class WarmupTemplateRequest : IEventMessage
+    public class WarmupRequestMessage : IEventMessage
     {
         public bool IsValid { get; set; }
 

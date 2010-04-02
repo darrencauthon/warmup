@@ -1,17 +1,18 @@
 using System.Collections.Generic;
+using warmup.Messages;
 
 namespace warmup
 {
     public interface IWarmupTemplateRequestParser
     {
-        WarmupTemplateRequest GetRequest(string[] args);
+        WarmupRequestMessage GetRequest(string[] args);
     }
 
     public class WarmupTemplateRequestParser : IWarmupTemplateRequestParser
     {
-        public WarmupTemplateRequest GetRequest(string[] args)
+        public WarmupRequestMessage GetRequest(string[] args)
         {
-            return new WarmupTemplateRequest{
+            return new WarmupRequestMessage{
                                                 IsValid = DetermineIfArgsAreValid(args),
                                                 TemplateName = PullTemplateNameFromArgs(args),
                                                 TokenReplaceValue = PullTokenReplaceValueFromArgs(args),

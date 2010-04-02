@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using warmup.Messages;
 using warmup.settings;
 
 namespace warmup.TemplateFileRetrievers
@@ -20,9 +21,9 @@ namespace warmup.TemplateFileRetrievers
             return TheSourceControlTypeIsSvn();
         }
 
-        public void RetrieveTheFiles(WarmupTemplateRequest request)
+        public void RetrieveTheFiles(WarmupRequestMessage requestMessage)
         {
-            var sourceLocation = new Uri(GetConfiguration().SourceControlWarmupLocation + request.TemplateName);
+            var sourceLocation = new Uri(GetConfiguration().SourceControlWarmupLocation + requestMessage.TemplateName);
 
             Console.WriteLine("svn exporting to: {0}", pathDeterminer.FullPath);
 

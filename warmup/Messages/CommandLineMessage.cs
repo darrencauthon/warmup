@@ -1,6 +1,6 @@
 ﻿using AppBus;
 
-namespace warmup
+namespace warmup.Messages
 {
     public class CommandLineMessage : IEventMessage
     {

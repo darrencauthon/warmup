@@ -51,14 +51,11 @@
     <Compile Include="..\SolutionVersion.cs">
       <Link>SolutionVersion.cs</Link>
     </Compile>
-    <Compile Include="ApplicationCommandExecuter.cs" />
-    <Compile Include="ICommandLineCallExecuter.cs" />
-    <Compile Include="RetrieveFilesMessage.cs" />
+    <Compile Include="Messages\RetrieveFilesMessage.cs" />
     <Compile Include="StructureMapMessageHandlerFactory.cs" />
     <Compile Include="TemplateFileRetrievers\IFileRetriever.cs" />
-    <Compile Include="WarmupCommandLineCallExecuter.cs" />
-    <Compile Include="WarmupTemplateRequest.cs" />
-    <Compile Include="CommandLineMessage.cs" />
+    <Compile Include="Messages\WarmupRequestMessage.cs" />
+    <Compile Include="Messages\CommandLineMessage.cs" />
     <Compile Include="PathDeterminer.cs" />
     <Compile Include="TemplateFileRetrievers\GitTemplateFilesRetriever.cs" />
     <Compile Include="Program.cs" />

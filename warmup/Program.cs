@@ -1,6 +1,7 @@
 using AppBus;
 using StructureMap;
 using StructureMap.Configuration.DSL;
+using warmup.Messages;
 
 namespace warmup
 {

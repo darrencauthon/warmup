@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using warmup.Messages;
 using warmup.settings;
 
 namespace warmup.TemplateFileRetrievers
@@ -21,12 +22,12 @@ namespace warmup.TemplateFileRetrievers
             return TheSourceControlTypeIsGit();
         }
 
-        public void RetrieveTheFiles(WarmupTemplateRequest request)
+        public void RetrieveTheFiles(WarmupRequestMessage requestMessage)
         {
             var fullPath = pathDeterminer.FullPath;
             Console.WriteLine("Hardcore git cloning action to: {0}", fullPath);
 
-            var sourceLocationToGit = GetTheGitSourceLocation(request);
+            var sourceLocationToGit = GetTheGitSourceLocation(requestMessage);
             if (string.IsNullOrEmpty(sourceLocationToGit) == false)
             {
                 var psi = CreateProcessStartInfo(fullPath, sourceLocationToGit);
@@ -63,9 +64,9 @@ namespace warmup.TemplateFileRetrievers
             return warmupConfigurationProvider.GetWarmupConfiguration();
         }
 
-        private string GetTheGitSourceLocation(WarmupTemplateRequest warmupTemplateRequest)
+        private string GetTheGitSourceLocation(WarmupRequestMessage warmupRequestMessage)
         {
-            var piecesOfPath = GetThePiecesOfPath(warmupTemplateRequest);
+            var piecesOfPath = GetThePiecesOfPath(warmupRequestMessage);
             if (piecesOfPath.Length == 0)
                 return string.Empty;
             return piecesOfPath[0] + ".git";
@@ -83,11 +84,11 @@ namespace warmup.TemplateFileRetrievers
             return psi;
         }
 
-        private string[] GetThePiecesOfPath(WarmupTemplateRequest warmupTemplateRequest)
+        private string[] GetThePiecesOfPath(WarmupRequestMessage warmupRequestMessage)
         {
             var separationCharacters = new[]{".git"};
 
-            var sourceLocation = new Uri(GetConfiguration().SourceControlWarmupLocation + warmupTemplateRequest.TemplateName);
+            var sourceLocation = new Uri(GetConfiguration().SourceControlWarmupLocation + warmupRequestMessage.TemplateName);
             return sourceLocation.ToString().Split(separationCharacters, StringSplitOptions.RemoveEmptyEntries);
         }
     }
