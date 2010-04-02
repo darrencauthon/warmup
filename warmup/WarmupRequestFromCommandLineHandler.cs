@@ -2,11 +2,7 @@
 
 namespace warmup
 {
-    public interface IWarmupRequestFromCommandLineHandler : IMessageHandler<ApplicationRanMessage>
-    {
-    }
-
-    public class WarmupRequestFromCommandLineHandler : IWarmupRequestFromCommandLineHandler
+    public class WarmupRequestFromCommandLineHandler : IMessageHandler<ApplicationRanMessage>
     {
         private readonly IWarmupTemplateRequestParser warmupTemplateRequestParser;
         private readonly IApplicationBus bus;

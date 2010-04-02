@@ -6,11 +6,7 @@ using warmup.TemplateFileRetrievers;
 
 namespace warmup
 {
-    public interface IWarmupTemplateRequestExecuter : IMessageHandler<WarmupTemplateRequest>
-    {
-    }
-
-    public class WarmupTemplateRequestExecuter : IWarmupTemplateRequestExecuter
+    public class WarmupTemplateRequestExecuter : IMessageHandler<WarmupTemplateRequest>
     {
         public void Handle(WarmupTemplateRequest warmupTemplateRequest)
         {
@@ -41,17 +37,18 @@ namespace warmup
                 .ToList()
                 .ForEach(retriever =>
                              {
-                                 if (retriever.CanRetrieve())
-                                     retriever.Handle(warmupTemplateRequest);
+                                 if (retriever.CanRetrieveTheFiles())
+                                     retriever.RetrieveTheFiles(warmupTemplateRequest);
                              });
         }
 
-        private static ITemplateFilesRetriever[] GetTemplateFileRetrievers(IPathDeterminer pathDeterminer)
+        private static IFileRetriever[] GetTemplateFileRetrievers(IPathDeterminer pathDeterminer)
         {
             var warmupConfigurationProvider = GetTheWarmupConfigurationProvider();
-            return new ITemplateFilesRetriever[]{
-                                                    new SvnTemplateFilesRetriever(warmupConfigurationProvider, pathDeterminer)
-                                                };
+            return new IFileRetriever[]{
+                                           new GitTemplateFilesRetriever(warmupConfigurationProvider, pathDeterminer),
+                                           new SvnTemplateFilesRetriever(warmupConfigurationProvider, pathDeterminer),
+                                       };
         }
 
         private static IWarmupConfigurationProvider GetTheWarmupConfigurationProvider()

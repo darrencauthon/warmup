@@ -55,12 +55,12 @@
     <Compile Include="ICommandLineCallExecuter.cs" />
     <Compile Include="RetrieveFilesMessage.cs" />
     <Compile Include="StructureMapMessageHandlerFactory.cs" />
+    <Compile Include="TemplateFileRetrievers\IFileRetriever.cs" />
     <Compile Include="WarmupCommandLineCallExecuter.cs" />
     <Compile Include="WarmupTemplateRequest.cs" />
     <Compile Include="ApplicationRanMessage.cs" />
     <Compile Include="PathDeterminer.cs" />
     <Compile Include="TemplateFileRetrievers\GitTemplateFilesRetriever.cs" />
-    <Compile Include="ITemplateFilesRetriever.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="settings\ConfigurationFileWarmupConfigurationProvider.cs" />

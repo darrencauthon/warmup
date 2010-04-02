@@ -19,8 +19,8 @@ namespace warmup
         {
             var container = CreateTheContainer();
             var bus = container.GetInstance<IApplicationBus>();
-            bus.Add(typeof (IWarmupRequestFromCommandLineHandler));
-            bus.Add(typeof (IWarmupTemplateRequestExecuter));
+            bus.Add(typeof (WarmupRequestFromCommandLineHandler));
+            bus.Add(typeof (WarmupTemplateRequestExecuter));
             return bus;
         }
 

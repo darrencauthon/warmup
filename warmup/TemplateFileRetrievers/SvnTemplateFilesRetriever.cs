@@ -4,7 +4,7 @@ using warmup.settings;
 
 namespace warmup.TemplateFileRetrievers
 {
-    public class SvnTemplateFilesRetriever : ITemplateFilesRetriever
+    public class SvnTemplateFilesRetriever : IFileRetriever
     {
         private readonly IWarmupConfigurationProvider warmupConfigurationProvider;
         private readonly IPathDeterminer pathDeterminer;
@@ -15,24 +15,14 @@ namespace warmup.TemplateFileRetrievers
             this.pathDeterminer = pathDeterminer;
         }
 
-        public bool CanRetrieve()
+        public bool CanRetrieveTheFiles()
         {
             return TheSourceControlTypeIsSvn();
         }
 
-        private bool TheSourceControlTypeIsSvn()
+        public void RetrieveTheFiles(WarmupTemplateRequest request)
         {
-            return string.Compare(GetConfiguration().SourceControlType, "Svn", true) == 0;
-        }
-
-        private WarmupConfiguration GetConfiguration()
-        {
-            return warmupConfigurationProvider.GetWarmupConfiguration();
-        }
-
-        public void Handle(WarmupTemplateRequest warmupTemplateRequest)
-        {
-            var sourceLocation = new Uri(GetConfiguration().SourceControlWarmupLocation + warmupTemplateRequest.TemplateName);
+            var sourceLocation = new Uri(GetConfiguration().SourceControlWarmupLocation + request.TemplateName);
 
             Console.WriteLine("svn exporting to: {0}", pathDeterminer.FullPath);
 
@@ -49,6 +39,16 @@ namespace warmup.TemplateFileRetrievers
 
             Console.WriteLine(output);
             Console.WriteLine(error);
+        }
+
+        private bool TheSourceControlTypeIsSvn()
+        {
+            return string.Compare(GetConfiguration().SourceControlType, "Svn", true) == 0;
+        }
+
+        private WarmupConfiguration GetConfiguration()
+        {
+            return warmupConfigurationProvider.GetWarmupConfiguration();
         }
 
         private ProcessStartInfo CreateProcessStartInfo(Uri sourceLocation)

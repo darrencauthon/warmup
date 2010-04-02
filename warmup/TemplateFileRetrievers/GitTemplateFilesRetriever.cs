@@ -4,38 +4,29 @@ using warmup.settings;
 
 namespace warmup.TemplateFileRetrievers
 {
-    public class GitTemplateFilesRetriever
+    public class GitTemplateFilesRetriever : IFileRetriever
     {
         private readonly IWarmupConfigurationProvider warmupConfigurationProvider;
         private readonly IPathDeterminer pathDeterminer;
 
-        public GitTemplateFilesRetriever(IWarmupConfigurationProvider warmupConfigurationProvider, IPathDeterminer pathDeterminer)
+        public GitTemplateFilesRetriever(IWarmupConfigurationProvider warmupConfigurationProvider,
+                                         IPathDeterminer pathDeterminer)
         {
             this.warmupConfigurationProvider = warmupConfigurationProvider;
             this.pathDeterminer = pathDeterminer;
         }
 
-        public bool CanHandle()
+        public bool CanRetrieveTheFiles()
         {
             return TheSourceControlTypeIsGit();
         }
 
-        private bool TheSourceControlTypeIsGit()
-        {
-            return string.Compare(GetConfiguration().SourceControlType, "Git", true) == 0;
-        }
-
-        private WarmupConfiguration GetConfiguration()
-        {
-            return warmupConfigurationProvider.GetWarmupConfiguration();
-        }
-
-        private void GetFiles(WarmupTemplateRequest warmupTemplateRequest)
+        public void RetrieveTheFiles(WarmupTemplateRequest request)
         {
             var fullPath = pathDeterminer.FullPath;
             Console.WriteLine("Hardcore git cloning action to: {0}", fullPath);
 
-            var sourceLocationToGit = GetTheGitSourceLocation(warmupTemplateRequest);
+            var sourceLocationToGit = GetTheGitSourceLocation(request);
             if (string.IsNullOrEmpty(sourceLocationToGit) == false)
             {
                 var psi = CreateProcessStartInfo(fullPath, sourceLocationToGit);
@@ -60,6 +51,16 @@ namespace warmup.TemplateFileRetrievers
                 //    Directory.Delete(git_directory, true);
                 //}
             }
+        }
+
+        private bool TheSourceControlTypeIsGit()
+        {
+            return string.Compare(GetConfiguration().SourceControlType, "Git", true) == 0;
+        }
+
+        private WarmupConfiguration GetConfiguration()
+        {
+            return warmupConfigurationProvider.GetWarmupConfiguration();
         }
 
         private string GetTheGitSourceLocation(WarmupTemplateRequest warmupTemplateRequest)
@@ -88,11 +89,6 @@ namespace warmup.TemplateFileRetrievers
 
             var sourceLocation = new Uri(GetConfiguration().SourceControlWarmupLocation + warmupTemplateRequest.TemplateName);
             return sourceLocation.ToString().Split(separationCharacters, StringSplitOptions.RemoveEmptyEntries);
-        }
-
-        public void Handle(RetrieveFilesMessage message)
-        {
-            this.GetFiles(message.Request);
         }
     }
 }
