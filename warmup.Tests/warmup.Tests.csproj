@@ -58,7 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ProcessCommandLineWarmupRequestTests.cs" />
-    <Compile Include="WarmupTemplateRequestParserTests.cs" />
+    <Compile Include="WarmupRequestMessageParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

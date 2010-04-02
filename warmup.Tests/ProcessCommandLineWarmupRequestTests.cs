@@ -40,39 +40,6 @@ namespace warmup.Tests
             return message;
         }
 
-        private CommandLineMessage GetValidRequestMessage()
-        {
-            var message = CreateApplicationRanMessage();
-            TheRequestIsValid(message);
-            return message;
-        }
-
-        private CommandLineMessage GetInvalidRequestMessage()
-        {
-            var message = CreateApplicationRanMessage();
-            TheRequestIsInvalid(message);
-            return message;
-        }
-
-        private void TheRequestIsInvalid(CommandLineMessage message)
-        {
-            mocker.GetMock<IWarmupRequestMessageParser>()
-                .Setup(x => x.GetRequest(message.CommandLineArguments))
-                .Returns(new WarmupRequestMessage{IsValid = false});
-        }
-
-        private void TheRequestIsValid(CommandLineMessage message)
-        {
-            mocker.GetMock<IWarmupRequestMessageParser>()
-                .Setup(x => x.GetRequest(message.CommandLineArguments))
-                .Returns(new WarmupRequestMessage{IsValid = true});
-        }
-
-        private static CommandLineMessage CreateApplicationRanMessage()
-        {
-            return new CommandLineMessage{CommandLineArguments = new string[]{}};
-        }
-
         #region test bus
 
         private class TestBus : IApplicationBus

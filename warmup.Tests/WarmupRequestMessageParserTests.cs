@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace warmup.Tests
 {
     [TestFixture]
-    public class WarmupTemplateRequestParserTests
+    public class WarmupRequestMessageParserTests
     {
         private AutoMoqer mocker;
 
