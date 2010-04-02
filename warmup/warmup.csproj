@@ -51,7 +51,6 @@
     <Compile Include="..\SolutionVersion.cs">
       <Link>SolutionVersion.cs</Link>
     </Compile>
-    <Compile Include="Messages\RetrieveFilesMessage.cs" />
     <Compile Include="StructureMapMessageHandlerFactory.cs" />
     <Compile Include="TemplateFileRetrievers\IFileRetriever.cs" />
     <Compile Include="Messages\WarmupRequestMessage.cs" />
@@ -68,7 +67,7 @@
     <Compile Include="ProcessCommandLineWarmupRequest.cs" />
     <Compile Include="TokensInFilesReplacer.cs" />
     <Compile Include="ExecuteTheWarmupRequest.cs" />
-    <Compile Include="WarmupTemplateRequestParser.cs" />
+    <Compile Include="WarmupRequestMessageParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

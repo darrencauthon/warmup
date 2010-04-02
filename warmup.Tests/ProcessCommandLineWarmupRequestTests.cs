@@ -25,7 +25,7 @@ namespace warmup.Tests
             var message = SetWarmupTemplateRequestParserToReturn(request);
 
             var testBus = new TestBus();
-            var handler = new ProcessCommandLineWarmupRequest(mocker.GetMock<IWarmupTemplateRequestParser>().Object, testBus);
+            var handler = new ProcessCommandLineWarmupRequest(mocker.GetMock<IWarmupRequestMessageParser>().Object, testBus);
 
             handler.Handle(message);
             Assert.AreSame(request, testBus.EventMessage);
@@ -34,7 +34,7 @@ namespace warmup.Tests
         private CommandLineMessage SetWarmupTemplateRequestParserToReturn(WarmupRequestMessage requestMessage)
         {
             var message = new CommandLineMessage{CommandLineArguments = new string[]{}};
-            mocker.GetMock<IWarmupTemplateRequestParser>()
+            mocker.GetMock<IWarmupRequestMessageParser>()
                 .Setup(x => x.GetRequest(message.CommandLineArguments))
                 .Returns(requestMessage);
             return message;
@@ -56,14 +56,14 @@ namespace warmup.Tests
 
         private void TheRequestIsInvalid(CommandLineMessage message)
         {
-            mocker.GetMock<IWarmupTemplateRequestParser>()
+            mocker.GetMock<IWarmupRequestMessageParser>()
                 .Setup(x => x.GetRequest(message.CommandLineArguments))
                 .Returns(new WarmupRequestMessage{IsValid = false});
         }
 
         private void TheRequestIsValid(CommandLineMessage message)
         {
-            mocker.GetMock<IWarmupTemplateRequestParser>()
+            mocker.GetMock<IWarmupRequestMessageParser>()
                 .Setup(x => x.GetRequest(message.CommandLineArguments))
                 .Returns(new WarmupRequestMessage{IsValid = true});
         }

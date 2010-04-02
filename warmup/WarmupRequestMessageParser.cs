@@ -3,20 +3,20 @@ using warmup.Messages;
 
 namespace warmup
 {
-    public interface IWarmupTemplateRequestParser
+    public interface IWarmupRequestMessageParser
     {
         WarmupRequestMessage GetRequest(string[] args);
     }
 
-    public class WarmupTemplateRequestParser : IWarmupTemplateRequestParser
+    public class WarmupRequestMessageParser : IWarmupRequestMessageParser
     {
         public WarmupRequestMessage GetRequest(string[] args)
         {
             return new WarmupRequestMessage{
-                                                IsValid = DetermineIfArgsAreValid(args),
-                                                TemplateName = PullTemplateNameFromArgs(args),
-                                                TokenReplaceValue = PullTokenReplaceValueFromArgs(args),
-                                            };
+                                               IsValid = DetermineIfArgsAreValid(args),
+                                               TemplateName = PullTemplateNameFromArgs(args),
+                                               TokenReplaceValue = PullTokenReplaceValueFromArgs(args),
+                                           };
         }
 
         private static string PullTokenReplaceValueFromArgs(string[] args)
