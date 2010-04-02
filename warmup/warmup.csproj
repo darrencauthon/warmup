@@ -58,7 +58,7 @@
     <Compile Include="TemplateFileRetrievers\IFileRetriever.cs" />
     <Compile Include="WarmupCommandLineCallExecuter.cs" />
     <Compile Include="WarmupTemplateRequest.cs" />
-    <Compile Include="ApplicationRanMessage.cs" />
+    <Compile Include="CommandLineMessage.cs" />
     <Compile Include="PathDeterminer.cs" />
     <Compile Include="TemplateFileRetrievers\GitTemplateFilesRetriever.cs" />
     <Compile Include="Program.cs" />
@@ -68,9 +68,9 @@
     <Compile Include="settings\IWarmupConfigurationProvider.cs" />
     <Compile Include="settings\WarmupConfiguration.cs" />
     <Compile Include="TemplateFileRetrievers\SvnTemplateFilesRetriever.cs" />
-    <Compile Include="WarmupRequestFromCommandLineHandler.cs" />
+    <Compile Include="ProcessCommandLineWarmupRequest.cs" />
     <Compile Include="TokensInFilesReplacer.cs" />
-    <Compile Include="WarmupTemplateRequestExecuter.cs" />
+    <Compile Include="ExecuteTheWarmupRequest.cs" />
     <Compile Include="WarmupTemplateRequestParser.cs" />
   </ItemGroup>
   <ItemGroup>

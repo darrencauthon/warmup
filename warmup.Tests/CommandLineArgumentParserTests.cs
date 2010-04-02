@@ -18,7 +18,7 @@ namespace warmup.Tests
         public void GetArguments_Called_ReturnsCommandLineArgumentsClass()
         {
             var parser = mocker.Resolve<WarmupTemplateRequestParser>();
-            var arguments = parser.GetArguments(new string[]{});
+            var arguments = parser.GetRequest(new string[]{});
             Assert.IsNotNull(arguments);
         }
 
@@ -26,7 +26,7 @@ namespace warmup.Tests
         public void GetArguments_CalledWithTwoValues_IsValidIsTrue()
         {
             var parser = mocker.Resolve<WarmupTemplateRequestParser>();
-            var arguments = parser.GetArguments(new[]{"one", "two"});
+            var arguments = parser.GetRequest(new[]{"one", "two"});
             Assert.IsTrue(arguments.IsValid);
         }
 
@@ -34,7 +34,7 @@ namespace warmup.Tests
         public void GetArguments_CalledWithOneValue_IsValidIsFalse()
         {
             var parser = mocker.Resolve<WarmupTemplateRequestParser>();
-            var arguments = parser.GetArguments(new[]{"one"});
+            var arguments = parser.GetRequest(new[]{"one"});
             Assert.IsFalse(arguments.IsValid);
         }
 
@@ -42,7 +42,7 @@ namespace warmup.Tests
         public void GetArguments_FirstArgumentIsBase_TemplateNameIsBase()
         {
             var parser = mocker.Resolve<WarmupTemplateRequestParser>();
-            var arguments = parser.GetArguments(new[]{"BASE"});
+            var arguments = parser.GetRequest(new[]{"BASE"});
             Assert.AreEqual("BASE", arguments.TemplateName);
         }
 
@@ -50,7 +50,7 @@ namespace warmup.Tests
         public void GetArguments_NoArgumentsPassed_IsValidIsFalse()
         {
             var parser = mocker.Resolve<WarmupTemplateRequestParser>();
-            var arguments = parser.GetArguments(new string[]{});
+            var arguments = parser.GetRequest(new string[]{});
             Assert.IsFalse(arguments.IsValid);
         }
 
@@ -58,7 +58,7 @@ namespace warmup.Tests
         public void GetArguments_SecondArgumentIsBase_TokenReplaceValueIsBase()
         {
             var parser = mocker.Resolve<WarmupTemplateRequestParser>();
-            var arguments = parser.GetArguments(new[]{"one", "BASE"});
+            var arguments = parser.GetRequest(new[]{"one", "BASE"});
             Assert.AreEqual("BASE", arguments.TokenReplaceValue);
         }
     }

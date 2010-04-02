@@ -32,7 +32,7 @@ namespace warmup
 
         private WarmupTemplateRequest CreateWarmupTemplateRequest(string[] commandLineArguments)
         {
-            return warmupTemplateRequestParser.GetArguments(commandLineArguments);
+            return warmupTemplateRequestParser.GetRequest(commandLineArguments);
         }
 
 

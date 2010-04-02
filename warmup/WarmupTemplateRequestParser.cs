@@ -4,12 +4,12 @@ namespace warmup
 {
     public interface IWarmupTemplateRequestParser
     {
-        WarmupTemplateRequest GetArguments(string[] args);
+        WarmupTemplateRequest GetRequest(string[] args);
     }
 
     public class WarmupTemplateRequestParser : IWarmupTemplateRequestParser
     {
-        public WarmupTemplateRequest GetArguments(string[] args)
+        public WarmupTemplateRequest GetRequest(string[] args)
         {
             return new WarmupTemplateRequest{
                                                 IsValid = DetermineIfArgsAreValid(args),

@@ -74,7 +74,7 @@ namespace warmup.Tests
         private Mock<IWarmupTemplateRequestParser> CreateParserFakeThatWillReturnThis(string[] commandLineArguments, WarmupTemplateRequest expectedRequest)
         {
             var parserFake = mocker.GetMock<IWarmupTemplateRequestParser>();
-            parserFake.Setup(x => x.GetArguments(commandLineArguments))
+            parserFake.Setup(x => x.GetRequest(commandLineArguments))
                 .Returns(expectedRequest);
             return parserFake;
         }
@@ -97,14 +97,14 @@ namespace warmup.Tests
         private void SetupParserThatCanHandleThese(string[] commandLineArguments)
         {
             mocker.GetMock<IWarmupTemplateRequestParser>()
-                .Setup(x => x.GetArguments(commandLineArguments))
+                .Setup(x => x.GetRequest(commandLineArguments))
                 .Returns(new WarmupTemplateRequest{IsValid = true});
         }
 
         private void SetupParserThatCannotHandleThese(string[] commandLineArguments)
         {
             mocker.GetMock<IWarmupTemplateRequestParser>()
-                .Setup(x => x.GetArguments(commandLineArguments))
+                .Setup(x => x.GetRequest(commandLineArguments))
                 .Returns(new WarmupTemplateRequest{IsValid = false});
         }
     }
