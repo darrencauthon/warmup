@@ -55,7 +55,6 @@
     <Compile Include="TemplateFileRetrievers\IFileRetriever.cs" />
     <Compile Include="Messages\WarmupRequestMessage.cs" />
     <Compile Include="Messages\CommandLineMessage.cs" />
-    <Compile Include="PathDeterminer.cs" />
     <Compile Include="TemplateFileRetrievers\GitTemplateFilesRetriever.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

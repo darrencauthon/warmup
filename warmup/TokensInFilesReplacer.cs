@@ -11,16 +11,9 @@ namespace warmup
 
     public class TokensInFilesReplacer : ITokensInFilesReplacer
     {
-        private readonly IPathDeterminer pathDeterminer;
-
-        public TokensInFilesReplacer(IPathDeterminer pathDeterminer)
-        {
-            this.pathDeterminer = pathDeterminer;
-        }
-
         public void ReplaceTokens(string name)
         {
-            var startingPoint = new DirectoryInfo(pathDeterminer.FullPath);
+            var startingPoint = new DirectoryInfo(Path.GetFullPath(name));
 
             //move all directories
             MoveAllDirectories(startingPoint, name);

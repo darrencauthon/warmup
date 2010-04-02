@@ -24,17 +24,12 @@ namespace warmup
 
         private static ITokensInFilesReplacer CreateTokenFileReplacer(WarmupRequestMessage warmupRequestMessage)
         {
-            return new TokensInFilesReplacer(new PathDeterminer(warmupRequestMessage.TokenReplaceValue));
-        }
-
-        private static IPathDeterminer CreatePathDeterminer(WarmupRequestMessage warmupRequestMessage)
-        {
-            return new PathDeterminer(warmupRequestMessage.TokenReplaceValue);
+            return new TokensInFilesReplacer();
         }
 
         private static void RetrieveTheTemplateFiles(WarmupRequestMessage warmupRequestMessage)
         {
-            GetTemplateFileRetrievers(CreatePathDeterminer(warmupRequestMessage))
+            GetTemplateFileRetrievers()
                 .ToList()
                 .ForEach(retriever =>
                              {
@@ -43,12 +38,12 @@ namespace warmup
                              });
         }
 
-        private static IFileRetriever[] GetTemplateFileRetrievers(IPathDeterminer pathDeterminer)
+        private static IFileRetriever[] GetTemplateFileRetrievers()
         {
             var warmupConfigurationProvider = GetTheWarmupConfigurationProvider();
             return new IFileRetriever[]{
-                                           new GitTemplateFilesRetriever(warmupConfigurationProvider, pathDeterminer),
-                                           new SvnTemplateFilesRetriever(warmupConfigurationProvider, pathDeterminer),
+                                           new GitTemplateFilesRetriever(warmupConfigurationProvider),
+                                           new SvnTemplateFilesRetriever(warmupConfigurationProvider),
                                        };
         }
 

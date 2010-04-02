@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.IO;
 using warmup.Messages;
 using warmup.settings;
 
@@ -8,12 +9,10 @@ namespace warmup.TemplateFileRetrievers
     public class SvnTemplateFilesRetriever : IFileRetriever
     {
         private readonly IWarmupConfigurationProvider warmupConfigurationProvider;
-        private readonly IPathDeterminer pathDeterminer;
 
-        public SvnTemplateFilesRetriever(IWarmupConfigurationProvider warmupConfigurationProvider, IPathDeterminer pathDeterminer)
+        public SvnTemplateFilesRetriever(IWarmupConfigurationProvider warmupConfigurationProvider)
         {
             this.warmupConfigurationProvider = warmupConfigurationProvider;
-            this.pathDeterminer = pathDeterminer;
         }
 
         public bool CanRetrieveTheFiles()
@@ -25,9 +24,7 @@ namespace warmup.TemplateFileRetrievers
         {
             var sourceLocation = new Uri(GetConfiguration().SourceControlWarmupLocation + requestMessage.TemplateName);
 
-            Console.WriteLine("svn exporting to: {0}", pathDeterminer.FullPath);
-
-            var psi = CreateProcessStartInfo(sourceLocation);
+            var psi = CreateProcessStartInfo(sourceLocation, requestMessage);
 
             //todo: better error handling
             Console.WriteLine("Running: {0} {1}", psi.FileName, psi.Arguments);
@@ -52,9 +49,9 @@ namespace warmup.TemplateFileRetrievers
             return warmupConfigurationProvider.GetWarmupConfiguration();
         }
 
-        private ProcessStartInfo CreateProcessStartInfo(Uri sourceLocation)
+        private ProcessStartInfo CreateProcessStartInfo(Uri sourceLocation, WarmupRequestMessage message)
         {
-            var processStartInfo = new ProcessStartInfo("svn", string.Format("export {0} {1}", sourceLocation, pathDeterminer.FullPath));
+            var processStartInfo = new ProcessStartInfo("svn", string.Format("export {0} {1}", sourceLocation, Path.GetFullPath(message.TokenReplaceValue)));
 
             processStartInfo.UseShellExecute = false;
             processStartInfo.CreateNoWindow = true;

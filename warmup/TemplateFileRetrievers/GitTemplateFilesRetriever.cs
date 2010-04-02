@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.IO;
 using warmup.Messages;
 using warmup.settings;
 
@@ -8,13 +9,10 @@ namespace warmup.TemplateFileRetrievers
     public class GitTemplateFilesRetriever : IFileRetriever
     {
         private readonly IWarmupConfigurationProvider warmupConfigurationProvider;
-        private readonly IPathDeterminer pathDeterminer;
 
-        public GitTemplateFilesRetriever(IWarmupConfigurationProvider warmupConfigurationProvider,
-                                         IPathDeterminer pathDeterminer)
+        public GitTemplateFilesRetriever(IWarmupConfigurationProvider warmupConfigurationProvider)
         {
             this.warmupConfigurationProvider = warmupConfigurationProvider;
-            this.pathDeterminer = pathDeterminer;
         }
 
         public bool CanRetrieveTheFiles()
@@ -24,7 +22,7 @@ namespace warmup.TemplateFileRetrievers
 
         public void RetrieveTheFiles(WarmupRequestMessage requestMessage)
         {
-            var fullPath = pathDeterminer.FullPath;
+            var fullPath = Path.GetFullPath(requestMessage.TokenReplaceValue);
             Console.WriteLine("Hardcore git cloning action to: {0}", fullPath);
 
             var sourceLocationToGit = GetTheGitSourceLocation(requestMessage);
