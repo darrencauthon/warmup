@@ -1,5 +1,4 @@
-﻿using System;
-using AppBus;
+﻿using AppBus;
 
 namespace warmup.Messages
 {

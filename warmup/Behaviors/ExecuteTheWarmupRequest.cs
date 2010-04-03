@@ -2,7 +2,6 @@
 using System.Linq;
 using AppBus;
 using warmup.Messages;
-using warmup.settings;
 using warmup.TemplateFileRetrievers;
 
 namespace warmup.Behaviors

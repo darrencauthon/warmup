@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.IO;
 using AppBus;
 using warmup.Messages;
 using warmup.settings;
@@ -16,7 +12,7 @@ namespace warmup.Behaviors
         private readonly IWarmupConfigurationProvider warmupConfigurationProvider;
 
         public RetrieveFilesFromTheGitRepository(IApplicationBus bus,
-            IWarmupConfigurationProvider warmupConfigurationProvider)
+                                                 IWarmupConfigurationProvider warmupConfigurationProvider)
         {
             this.bus = bus;
             this.warmupConfigurationProvider = warmupConfigurationProvider;
@@ -57,7 +53,7 @@ namespace warmup.Behaviors
 
         private string GetTheFullPath(RetrieveFilesFromGitRepositoryMessage requestMessage)
         {
-            var message = new GetTargetFilePathMessage { TokenReplaceValue = requestMessage.TokenReplaceValue };
+            var message = new GetTargetFilePathMessage{TokenReplaceValue = requestMessage.TokenReplaceValue};
             bus.Send(message);
             return message.Result.Path;
         }
@@ -82,10 +78,9 @@ namespace warmup.Behaviors
             return piecesOfPath[0] + ".git";
         }
 
-
         private string[] GetThePiecesOfPath(RetrieveFilesFromGitRepositoryMessage warmupRequestMessage)
         {
-            var separationCharacters = new[] { ".git" };
+            var separationCharacters = new[]{".git"};
 
             var sourceLocation = new Uri(GetConfiguration().SourceControlWarmupLocation + warmupRequestMessage.TemplateName);
             return sourceLocation.ToString().Split(separationCharacters, StringSplitOptions.RemoveEmptyEntries);
@@ -95,6 +90,5 @@ namespace warmup.Behaviors
         {
             return warmupConfigurationProvider.GetWarmupConfiguration();
         }
-
     }
 }
