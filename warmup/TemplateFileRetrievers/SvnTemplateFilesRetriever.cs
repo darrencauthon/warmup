@@ -1,6 +1,6 @@
 using System;
 using System.Diagnostics;
-using System.IO;
+using AppBus;
 using warmup.Messages;
 using warmup.settings;
 
@@ -9,10 +9,12 @@ namespace warmup.TemplateFileRetrievers
     public class SvnTemplateFilesRetriever : IFileRetriever
     {
         private readonly IWarmupConfigurationProvider warmupConfigurationProvider;
+        private readonly IApplicationBus applicationBus;
 
-        public SvnTemplateFilesRetriever(IWarmupConfigurationProvider warmupConfigurationProvider)
+        public SvnTemplateFilesRetriever(IWarmupConfigurationProvider warmupConfigurationProvider, IApplicationBus applicationBus)
         {
             this.warmupConfigurationProvider = warmupConfigurationProvider;
+            this.applicationBus = applicationBus;
         }
 
         public bool CanRetrieveTheFiles()
@@ -49,9 +51,9 @@ namespace warmup.TemplateFileRetrievers
             return warmupConfigurationProvider.GetWarmupConfiguration();
         }
 
-        private ProcessStartInfo CreateProcessStartInfo(Uri sourceLocation, WarmupRequestMessage message)
+        private ProcessStartInfo CreateProcessStartInfo(Uri sourceLocation, WarmupRequestMessage warmupRequestMessage)
         {
-            var processStartInfo = new ProcessStartInfo("svn", string.Format("export {0} {1}", sourceLocation, Path.GetFullPath(message.TokenReplaceValue)));
+            var processStartInfo = new ProcessStartInfo("svn", string.Format("export {0} {1}", sourceLocation, GetThePath(warmupRequestMessage)));
 
             processStartInfo.UseShellExecute = false;
             processStartInfo.CreateNoWindow = true;
@@ -59,6 +61,13 @@ namespace warmup.TemplateFileRetrievers
             processStartInfo.RedirectStandardError = true;
 
             return processStartInfo;
+        }
+
+        private string GetThePath(WarmupRequestMessage requestMessage)
+        {
+            var message = new GetTargetFilePathMessage{TokenReplaceValue = requestMessage.TokenReplaceValue};
+            applicationBus.Send(message);
+            return message.Result.Path;
         }
     }
 }

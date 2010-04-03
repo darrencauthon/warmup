@@ -1,7 +1,7 @@
 using AutoMoq;
 using NUnit.Framework;
 
-namespace warmup.Tests
+namespace warmup.Tests.Behaviors
 {
     [TestFixture]
     public class WarmupRequestMessageParserTests

@@ -5,10 +5,17 @@ using warmup.Messages;
 using warmup.settings;
 using warmup.TemplateFileRetrievers;
 
-namespace warmup
+namespace warmup.Behaviors
 {
     public class ExecuteTheWarmupRequest : IMessageHandler<WarmupRequestMessage>
     {
+        private readonly IApplicationBus applicationBus;
+
+        public ExecuteTheWarmupRequest(IApplicationBus applicationBus)
+        {
+            this.applicationBus = applicationBus;
+        }
+
         public void Handle(WarmupRequestMessage warmupRequestMessage)
         {
             RetrieveTheTemplateFiles(warmupRequestMessage);
@@ -16,18 +23,18 @@ namespace warmup
             ReplaceTokensInTheTemplateFiles(warmupRequestMessage);
         }
 
-        private static void ReplaceTokensInTheTemplateFiles(WarmupRequestMessage warmupRequestMessage)
+        private void ReplaceTokensInTheTemplateFiles(WarmupRequestMessage warmupRequestMessage)
         {
             Console.WriteLine("replacing tokens");
-            (CreateTokenFileReplacer(warmupRequestMessage)).ReplaceTokens(warmupRequestMessage.TokenReplaceValue);
+            (CreateTokenFileReplacer()).ReplaceTokens(warmupRequestMessage.TokenReplaceValue);
         }
 
-        private static ITokensInFilesReplacer CreateTokenFileReplacer(WarmupRequestMessage warmupRequestMessage)
+        private ITokensInFilesReplacer CreateTokenFileReplacer()
         {
-            return new TokensInFilesReplacer();
+            return new TokensInFilesReplacer(applicationBus);
         }
 
-        private static void RetrieveTheTemplateFiles(WarmupRequestMessage warmupRequestMessage)
+        private void RetrieveTheTemplateFiles(WarmupRequestMessage warmupRequestMessage)
         {
             GetTemplateFileRetrievers()
                 .ToList()
@@ -38,12 +45,12 @@ namespace warmup
                              });
         }
 
-        private static IFileRetriever[] GetTemplateFileRetrievers()
+        private IFileRetriever[] GetTemplateFileRetrievers()
         {
             var warmupConfigurationProvider = GetTheWarmupConfigurationProvider();
             return new IFileRetriever[]{
-                                           new GitTemplateFilesRetriever(warmupConfigurationProvider),
-                                           new SvnTemplateFilesRetriever(warmupConfigurationProvider),
+                                           new GitTemplateFilesRetriever(warmupConfigurationProvider, applicationBus),
+                                           new SvnTemplateFilesRetriever(warmupConfigurationProvider, applicationBus),
                                        };
         }
 

@@ -1,6 +1,7 @@
 using AppBus;
 using StructureMap;
 using StructureMap.Configuration.DSL;
+using warmup.Behaviors;
 using warmup.Messages;
 
 namespace warmup
@@ -20,8 +21,11 @@ namespace warmup
         {
             var container = CreateTheContainer();
             var bus = container.GetInstance<IApplicationBus>();
+
             bus.Add(typeof (ProcessCommandLineWarmupRequest));
             bus.Add(typeof (ExecuteTheWarmupRequest));
+            bus.Add(typeof (DetermineThePathToPutTheFiles));
+
             return bus;
         }
 

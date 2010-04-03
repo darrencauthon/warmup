@@ -1,7 +1,7 @@
 ﻿using AppBus;
 using warmup.Messages;
 
-namespace warmup
+namespace warmup.Behaviors
 {
     public class ProcessCommandLineWarmupRequest : IMessageHandler<CommandLineMessage>
     {

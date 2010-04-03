@@ -2,9 +2,10 @@
 using AppBus;
 using AutoMoq;
 using NUnit.Framework;
+using warmup.Behaviors;
 using warmup.Messages;
 
-namespace warmup.Tests
+namespace warmup.Tests.Behaviors
 {
     [TestFixture]
     public class ProcessCommandLineWarmupRequestTests

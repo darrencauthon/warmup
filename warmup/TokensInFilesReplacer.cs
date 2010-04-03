@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Linq;
+using AppBus;
+using warmup.Messages;
 
 namespace warmup
 {
@@ -11,9 +13,16 @@ namespace warmup
 
     public class TokensInFilesReplacer : ITokensInFilesReplacer
     {
+        private readonly IApplicationBus applicationBus;
+
+        public TokensInFilesReplacer(IApplicationBus applicationBus)
+        {
+            this.applicationBus = applicationBus;
+        }
+
         public void ReplaceTokens(string name)
         {
-            var startingPoint = new DirectoryInfo(Path.GetFullPath(name));
+            var startingPoint = new DirectoryInfo(GetThePath(name));
 
             //move all directories
             MoveAllDirectories(startingPoint, name);
@@ -25,6 +34,13 @@ namespace warmup
 
             //replace file content
             ReplaceTokensInTheFiles(startingPoint, name);
+        }
+
+        private string GetThePath(string name)
+        {
+            var message = new GetTargetFilePathMessage{TokenReplaceValue = name};
+            applicationBus.Send(message);
+            return message.Result.Path;
         }
 
         private static void ReplaceTokensInTheFiles(DirectoryInfo point, string name)
