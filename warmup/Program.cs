@@ -4,6 +4,8 @@ using StructureMap.Configuration.DSL;
 using warmup.Behaviors;
 using warmup.Messages;
 using warmup.settings;
+using warmup.TemplateFileRetrievers;
+using System;
 
 namespace warmup
 {
@@ -48,6 +50,14 @@ namespace warmup
         {
             registry.For<IWarmupConfigurationProvider>()
                 .Use<ConfigurationFileWarmupConfigurationProvider>();
+
+            registry.For<IFileRetriever>()
+                .Use<GitTemplateFilesRetriever>()
+                .Named(Guid.NewGuid().ToString());
+            registry.For<IFileRetriever>()
+                .Use<SvnTemplateFilesRetriever>()
+                .Named(Guid.NewGuid().ToString());
+            
         }
 
         private static void LoadApplicationBusImplementations(Registry registry)

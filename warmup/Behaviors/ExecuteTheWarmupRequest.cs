@@ -9,7 +9,15 @@ namespace warmup.Behaviors
 {
     public class ExecuteTheWarmupRequest : IMessageHandler<WarmupRequestMessage>
     {
+        private readonly IFileRetriever[] fileRetrievers;
+        private readonly ITokensInFilesReplacer tokensInFilesReplacer;
         private readonly IApplicationBus applicationBus;
+
+        public ExecuteTheWarmupRequest(IFileRetriever[] fileRetrievers, ITokensInFilesReplacer tokensInFilesReplacer)
+        {
+            this.fileRetrievers = fileRetrievers;
+            this.tokensInFilesReplacer = tokensInFilesReplacer;
+        }
 
         public ExecuteTheWarmupRequest(IApplicationBus applicationBus)
         {
@@ -31,7 +39,7 @@ namespace warmup.Behaviors
 
         private ITokensInFilesReplacer CreateTokenFileReplacer()
         {
-            return new TokensInFilesReplacer(applicationBus);
+            return tokensInFilesReplacer;
         }
 
         private void RetrieveTheTemplateFiles(WarmupRequestMessage warmupRequestMessage)
@@ -47,16 +55,7 @@ namespace warmup.Behaviors
 
         private IFileRetriever[] GetTemplateFileRetrievers()
         {
-            var warmupConfigurationProvider = GetTheWarmupConfigurationProvider();
-            return new IFileRetriever[]{
-                                           new GitTemplateFilesRetriever(warmupConfigurationProvider, applicationBus),
-                                           new SvnTemplateFilesRetriever(warmupConfigurationProvider, applicationBus),
-                                       };
-        }
-
-        private static IWarmupConfigurationProvider GetTheWarmupConfigurationProvider()
-        {
-            return new ConfigurationFileWarmupConfigurationProvider();
+            return fileRetrievers;
         }
     }
 }
