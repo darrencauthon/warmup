@@ -51,8 +51,10 @@
     <Compile Include="..\SolutionVersion.cs">
       <Link>SolutionVersion.cs</Link>
     </Compile>
+    <Compile Include="Behaviors\RetrieveFilesFromTheSvnRepository.cs" />
     <Compile Include="Behaviors\DetermineThePathToPutTheFiles.cs" />
     <Compile Include="Behaviors\RetrieveFilesFromTheGitRepository.cs" />
+    <Compile Include="Messages\RetrieveFilesFromSvnRepositoryMessage.cs" />
     <Compile Include="Messages\GetTargetFilePathMessage.cs" />
     <Compile Include="Messages\RetrieveFilesFromGitRepositoryMessage.cs" />
     <Compile Include="StructureMapMessageHandlerFactory.cs" />

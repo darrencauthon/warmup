@@ -1,3 +1,4 @@
+using System;
 using AppBus;
 using StructureMap;
 using StructureMap.Configuration.DSL;
@@ -5,7 +6,6 @@ using warmup.Behaviors;
 using warmup.Messages;
 using warmup.settings;
 using warmup.TemplateFileRetrievers;
-using System;
 
 namespace warmup
 {
@@ -29,6 +29,7 @@ namespace warmup
             bus.Add(typeof (ExecuteTheWarmupRequest));
             bus.Add(typeof (DetermineThePathToPutTheFiles));
             bus.Add(typeof (RetrieveFilesFromTheGitRepository));
+            bus.Add(typeof (RetrieveFilesFromTheSvnRepository));
 
             return bus;
         }
@@ -57,7 +58,6 @@ namespace warmup
             registry.For<IFileRetriever>()
                 .Use<SvnTemplateFilesRetriever>()
                 .Named(Guid.NewGuid().ToString());
-            
         }
 
         private static void LoadApplicationBusImplementations(Registry registry)
