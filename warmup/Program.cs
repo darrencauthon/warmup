@@ -35,29 +35,37 @@ namespace warmup
         {
             var registry = new Registry();
 
+            RegisterAllInterfaceToClassNameMatchesInCurrentAssembly(registry);
+
+            LoadApplicationBusImplementations(registry);
+
+            SetSystemToUseTheConfigurationFile(registry);
+
+            return new Container(registry);
+        }
+
+        private static void SetSystemToUseTheConfigurationFile(Registry registry)
+        {
+            registry.For<IWarmupConfigurationProvider>()
+                .Use<ConfigurationFileWarmupConfigurationProvider>();
+        }
+
+        private static void LoadApplicationBusImplementations(Registry registry)
+        {
+            registry.For<IApplicationBus>()
+                .Singleton().Use<ApplicationBus>();
+
+            registry.For<IMessageHandlerFactory>()
+                .Use<StructureMapMessageHandlerFactory>();
+        }
+
+        private static void RegisterAllInterfaceToClassNameMatchesInCurrentAssembly(Registry registry)
+        {
             registry.Scan(x =>
                               {
                                   x.TheCallingAssembly();
                                   x.WithDefaultConventions();
                               });
-            registry.Scan(x =>
-                              {
-                                  x.AssemblyContainingType(typeof (IApplicationBus));
-                                  x.WithDefaultConventions();
-                              });
-
-            registry.For<IApplicationBus>()
-                .Singleton();
-
-            registry.For<IMessageHandlerFactory>()
-                .Use<StructureMapMessageHandlerFactory>();
-
-            registry.For<IWarmupConfigurationProvider>()
-                .Use<ConfigurationFileWarmupConfigurationProvider>();
-
-            var test = new Container(registry);
-
-            return test;
         }
     }
 }
