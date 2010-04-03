@@ -1,3 +1,4 @@
+using System;
 using AppBus;
 using warmup.Messages;
 using warmup.settings;
@@ -21,6 +22,14 @@ namespace warmup.TemplateFileRetrievers
         }
 
         public void RetrieveTheFiles(WarmupRequestMessage requestMessage)
+        {
+            if (CanRetrieveTheFiles() == false)
+                throw new InvalidOperationException("System cannot retrieve the files using git");
+
+            PutAMessageOnTheBusToRetrieveTheFiles(requestMessage);
+        }
+
+        private void PutAMessageOnTheBusToRetrieveTheFiles(WarmupRequestMessage requestMessage)
         {
             bus.Send(new RetrieveFilesFromGitRepositoryMessage{
                                                                   TemplateName = requestMessage.TemplateName,

@@ -61,6 +61,7 @@
     <Compile Include="Behaviors\ProcessCommandLineWarmupRequestTests.cs" />
     <Compile Include="Behaviors\WarmupRequestMessageParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TemplateFileRetrievers\GitTemplateFileRetrieverTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\warmup\warmup.csproj">
