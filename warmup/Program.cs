@@ -3,6 +3,7 @@ using StructureMap;
 using StructureMap.Configuration.DSL;
 using warmup.Behaviors;
 using warmup.Messages;
+using warmup.settings;
 
 namespace warmup
 {
@@ -25,6 +26,7 @@ namespace warmup
             bus.Add(typeof (ProcessCommandLineWarmupRequest));
             bus.Add(typeof (ExecuteTheWarmupRequest));
             bus.Add(typeof (DetermineThePathToPutTheFiles));
+            bus.Add(typeof (RetrieveFilesFromTheGitRepository));
 
             return bus;
         }
@@ -49,6 +51,9 @@ namespace warmup
 
             registry.For<IMessageHandlerFactory>()
                 .Use<StructureMapMessageHandlerFactory>();
+
+            registry.For<IWarmupConfigurationProvider>()
+                .Use<ConfigurationFileWarmupConfigurationProvider>();
 
             var test = new Container(registry);
 

@@ -52,7 +52,9 @@
       <Link>SolutionVersion.cs</Link>
     </Compile>
     <Compile Include="Behaviors\DetermineThePathToPutTheFiles.cs" />
+    <Compile Include="Behaviors\RetrieveFilesFromTheGitRepository.cs" />
     <Compile Include="Messages\GetTargetFilePathMessage.cs" />
+    <Compile Include="Messages\RetrieveFilesFromGitRepositoryMessage.cs" />
     <Compile Include="StructureMapMessageHandlerFactory.cs" />
     <Compile Include="TemplateFileRetrievers\IFileRetriever.cs" />
     <Compile Include="Messages\WarmupRequestMessage.cs" />
