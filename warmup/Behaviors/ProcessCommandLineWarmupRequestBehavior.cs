@@ -3,12 +3,12 @@ using warmup.Messages;
 
 namespace warmup.Behaviors
 {
-    public class ProcessCommandLineWarmupRequest : IMessageHandler<CommandLineMessage>
+    public class ProcessCommandLineWarmupRequestBehavior : IMessageHandler<CommandLineMessage>
     {
         private readonly IWarmupRequestMessageParser warmupRequestMessageParser;
         private readonly IApplicationBus bus;
 
-        public ProcessCommandLineWarmupRequest(IWarmupRequestMessageParser warmupRequestMessageParser,
+        public ProcessCommandLineWarmupRequestBehavior(IWarmupRequestMessageParser warmupRequestMessageParser,
                                                IApplicationBus bus)
         {
             this.warmupRequestMessageParser = warmupRequestMessageParser;

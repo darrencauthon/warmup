@@ -4,7 +4,7 @@ using warmup.Messages;
 
 namespace warmup.Behaviors
 {
-    public class DetermineThePathToPutTheFiles : IMessageHandler<GetTargetFilePathMessage>
+    public class DetermineThePathToPutTheFilesBehavior : IMessageHandler<GetTargetFilePathMessage>
     {
         public void Handle(GetTargetFilePathMessage message)
         {

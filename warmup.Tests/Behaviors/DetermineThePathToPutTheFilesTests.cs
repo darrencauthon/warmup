@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using AutoMoq;
 using NUnit.Framework;
 using warmup.Behaviors;
@@ -23,7 +23,7 @@ namespace warmup.Tests.Behaviors
             var expectedPath = Path.GetFullPath("test");
 
             var message = new GetTargetFilePathMessage{TokenReplaceValue = "test"};
-            var determiner = mocker.Resolve<DetermineThePathToPutTheFiles>();
+            var determiner = mocker.Resolve<DetermineThePathToPutTheFilesBehavior>();
             determiner.Handle(message);
 
             Assert.AreEqual(expectedPath, message.Result.Path);

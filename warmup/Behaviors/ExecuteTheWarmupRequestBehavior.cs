@@ -6,12 +6,12 @@ using warmup.TemplateFileRetrievers;
 
 namespace warmup.Behaviors
 {
-    public class ExecuteTheWarmupRequest : IMessageHandler<WarmupRequestMessage>
+    public class ExecuteTheWarmupRequestBehavior : IMessageHandler<WarmupRequestMessage>
     {
         private readonly IFileRetriever[] fileRetrievers;
         private readonly IApplicationBus applicationBus;
 
-        public ExecuteTheWarmupRequest(IFileRetriever[] fileRetrievers, IApplicationBus applicationBus)
+        public ExecuteTheWarmupRequestBehavior(IFileRetriever[] fileRetrievers, IApplicationBus applicationBus)
         {
             this.fileRetrievers = fileRetrievers;
             this.applicationBus = applicationBus;

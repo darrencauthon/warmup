@@ -6,11 +6,11 @@ using warmup.Messages;
 
 namespace warmup.Behaviors
 {
-    public class ReplaceTokensInTemplateFiles : IMessageHandler<ReplaceTokensInFileMessage>
+    public class Behavior : IMessageHandler<ReplaceTokensInFileMessage>
     {
         private readonly IApplicationBus applicationBus;
 
-        public ReplaceTokensInTemplateFiles(IApplicationBus applicationBus)
+        public Behavior(IApplicationBus applicationBus)
         {
             this.applicationBus = applicationBus;
         }

@@ -6,12 +6,12 @@ using warmup.settings;
 
 namespace warmup.Behaviors
 {
-    public class RetrieveFilesFromTheSvnRepository : IMessageHandler<RetrieveFilesFromSvnRepositoryMessage>
+    public class RetrieveFilesFromTheSvnRepositoryBehavior : IMessageHandler<RetrieveFilesFromSvnRepositoryMessage>
     {
         private readonly IApplicationBus applicationBus;
         private readonly IWarmupConfigurationProvider warmupConfigurationProvider;
 
-        public RetrieveFilesFromTheSvnRepository(IApplicationBus applicationBus,
+        public RetrieveFilesFromTheSvnRepositoryBehavior(IApplicationBus applicationBus,
                                                  IWarmupConfigurationProvider warmupConfigurationProvider)
         {
             this.applicationBus = applicationBus;

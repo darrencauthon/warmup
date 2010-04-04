@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using AppBus;
 using AutoMoq;
 using NUnit.Framework;
@@ -26,7 +26,7 @@ namespace warmup.Tests.Behaviors
             var message = SetWarmupTemplateRequestParserToReturn(request);
 
             var testBus = new TestBus();
-            var handler = new ProcessCommandLineWarmupRequest(mocker.GetMock<IWarmupRequestMessageParser>().Object, testBus);
+            var handler = new ProcessCommandLineWarmupRequestBehavior(mocker.GetMock<IWarmupRequestMessageParser>().Object, testBus);
 
             handler.Handle(message);
             Assert.AreSame(request, testBus.EventMessage);

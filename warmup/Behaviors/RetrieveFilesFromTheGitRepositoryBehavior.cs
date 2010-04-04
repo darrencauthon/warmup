@@ -6,12 +6,12 @@ using warmup.settings;
 
 namespace warmup.Behaviors
 {
-    public class RetrieveFilesFromTheGitRepository : IMessageHandler<RetrieveFilesFromGitRepositoryMessage>
+    public class RetrieveFilesFromTheGitRepositoryBehavior : IMessageHandler<RetrieveFilesFromGitRepositoryMessage>
     {
         private readonly IApplicationBus bus;
         private readonly IWarmupConfigurationProvider warmupConfigurationProvider;
 
-        public RetrieveFilesFromTheGitRepository(IApplicationBus bus,
+        public RetrieveFilesFromTheGitRepositoryBehavior(IApplicationBus bus,
                                                  IWarmupConfigurationProvider warmupConfigurationProvider)
         {
             this.bus = bus;
