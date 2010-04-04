@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using AppBus;
 using StructureMap;
 using StructureMap.Configuration.DSL;
@@ -13,6 +15,8 @@ namespace warmup
     {
         private static void Main(string[] args)
         {
+            LoadAllAssembliesFromTheCurrentFolder();
+
             var bus = CreateTheApplicationBus();
 
             var message = new CommandLineMessage{CommandLineArguments = args};
@@ -82,6 +86,43 @@ namespace warmup
                                   x.AssembliesFromApplicationBaseDirectory();
                                   x.With(new FileRetrieverConvention());
                               });
+        }
+
+        private static IList<string> GetLoadedAssemblies()
+        {
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+            return assemblies.Select(x => x.GetName().Name).ToList();
+        }
+
+        private static IList<string> GetAssembliesInCurrentFolder()
+        {
+            var binDir = Path.GetFullPath("warmup.dll");
+            binDir = binDir.Substring(0, binDir.Length - "warmup.dll".Length);
+            return Directory.GetFiles(binDir, "*.dll").ToList();
+        }
+
+        private static void LoadAllAssembliesFromTheCurrentFolder()
+        {
+            var currentAssemblies = GetLoadedAssemblies();
+
+            var assemblyFiles = GetAssembliesInCurrentFolder();
+            var loadedAssembly = new List<string>();
+
+            foreach (var file in assemblyFiles)
+            {
+                var assemblyName = Path.GetFileNameWithoutExtension(file);
+                if (currentAssemblies.Contains(assemblyName)) continue;
+
+                try
+                {
+                    var assembly = Assembly.LoadFrom(file);
+                    loadedAssembly.Add(assembly.FullName);
+                }
+                catch (Exception)
+                {
+                }
+            }
         }
     }
 }
