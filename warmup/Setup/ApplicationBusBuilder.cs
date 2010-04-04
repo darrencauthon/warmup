@@ -5,7 +5,7 @@ using System.Reflection;
 using AppBus;
 using StructureMap;
 
-namespace warmup
+namespace warmup.Setup
 {
     public class ApplicationBusBuilder
     {
@@ -20,7 +20,7 @@ namespace warmup
         {
             var container = CreateTheContainer();
 
-            var bus = new ApplicationBus(new StructureMapMessageHandlerFactory(container));
+            var bus = container.GetInstance<IApplicationBus>();
 
             GetAllTypesThatImplement(typeof (IMessageHandler)).ForEach(bus.Add);
 

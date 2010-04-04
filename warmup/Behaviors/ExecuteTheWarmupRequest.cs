@@ -10,17 +10,11 @@ namespace warmup.Behaviors
     {
         private readonly IFileRetriever[] fileRetrievers;
         private readonly ITokensInFilesReplacer tokensInFilesReplacer;
-        private readonly IApplicationBus applicationBus;
 
         public ExecuteTheWarmupRequest(IFileRetriever[] fileRetrievers, ITokensInFilesReplacer tokensInFilesReplacer)
         {
             this.fileRetrievers = fileRetrievers;
             this.tokensInFilesReplacer = tokensInFilesReplacer;
-        }
-
-        public ExecuteTheWarmupRequest(IApplicationBus applicationBus)
-        {
-            this.applicationBus = applicationBus;
         }
 
         public void Handle(WarmupRequestMessage warmupRequestMessage)

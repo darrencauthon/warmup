@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace warmup
+namespace warmup.Setup
 {
     public class AssemblyLoader
     {

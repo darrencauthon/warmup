@@ -4,7 +4,7 @@ using StructureMap.Configuration.DSL;
 using StructureMap.Graph;
 using warmup.TemplateFileRetrievers;
 
-namespace warmup
+namespace warmup.Setup
 {
     public class FileRetrieverConvention : IRegistrationConvention
     {

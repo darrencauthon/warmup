@@ -3,7 +3,7 @@ using StructureMap;
 using StructureMap.Configuration.DSL;
 using warmup.settings;
 
-namespace warmup
+namespace warmup.Setup
 {
     public class ContainerBuilder
     {

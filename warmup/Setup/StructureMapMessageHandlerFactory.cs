@@ -2,7 +2,7 @@
 using AppBus;
 using StructureMap;
 
-namespace warmup
+namespace warmup.Setup
 {
     public class StructureMapMessageHandlerFactory : IMessageHandlerFactory
     {
