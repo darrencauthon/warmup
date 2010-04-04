@@ -10,9 +10,23 @@ namespace warmup
     {
         public void Process(Type type, Registry registry)
         {
-            if (type.IsAbstract || !type.IsClass || !type.GetInterfaces().Contains(typeof (IFileRetriever)))
-                return;
+            if (TheTypeIsAConcreteClass(type) && TheTypeIsAFileRetriever(type))
+                AddTheTypeToTheRegistry(type, registry);
+        }
+
+        private static void AddTheTypeToTheRegistry(Type type, IRegistry registry)
+        {
             registry.AddType(typeof (IFileRetriever), type);
+        }
+
+        private static bool TheTypeIsAFileRetriever(Type type)
+        {
+            return type.GetInterfaces().Contains(typeof (IFileRetriever));
+        }
+
+        private static bool TheTypeIsAConcreteClass(Type type)
+        {
+            return !type.IsAbstract && !type.IsInterface;
         }
     }
 }
