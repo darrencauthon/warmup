@@ -77,7 +77,6 @@
     <Compile Include="Behaviors\ProcessCommandLineWarmupRequestBehavior.cs" />
     <Compile Include="Behaviors\Behavior.cs" />
     <Compile Include="Behaviors\ExecuteTheWarmupRequestBehavior.cs" />
-    <Compile Include="WarmupRequestMessageParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

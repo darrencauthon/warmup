@@ -1,5 +1,6 @@
 using AutoMoq;
 using NUnit.Framework;
+using warmup.Behaviors;
 
 namespace warmup.Tests.Behaviors
 {
