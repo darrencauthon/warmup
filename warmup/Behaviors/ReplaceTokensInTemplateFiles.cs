@@ -4,13 +4,13 @@ using System.Linq;
 using AppBus;
 using warmup.Messages;
 
-namespace warmup
+namespace warmup.Behaviors
 {
-    public class TokensInFilesReplacer : IMessageHandler<ReplaceTokensInFileMessage>
+    public class ReplaceTokensInTemplateFiles : IMessageHandler<ReplaceTokensInFileMessage>
     {
         private readonly IApplicationBus applicationBus;
 
-        public TokensInFilesReplacer(IApplicationBus applicationBus)
+        public ReplaceTokensInTemplateFiles(IApplicationBus applicationBus)
         {
             this.applicationBus = applicationBus;
         }
