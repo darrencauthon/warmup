@@ -1,11 +1,11 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using AppBus;
 using StructureMap;
 using StructureMap.Configuration.DSL;
-using warmup.Behaviors;
 using warmup.Messages;
 using warmup.settings;
-using warmup.TemplateFileRetrievers;
 
 namespace warmup
 {
@@ -25,13 +25,21 @@ namespace warmup
             var container = CreateTheContainer();
             var bus = container.GetInstance<IApplicationBus>();
 
-            bus.Add(typeof (ProcessCommandLineWarmupRequest));
-            bus.Add(typeof (ExecuteTheWarmupRequest));
-            bus.Add(typeof (DetermineThePathToPutTheFiles));
-            bus.Add(typeof (RetrieveFilesFromTheGitRepository));
-            bus.Add(typeof (RetrieveFilesFromTheSvnRepository));
+            GetAllTypesThatImplement(typeof (IMessageHandler)).ForEach(bus.Add);
 
             return bus;
+        }
+
+        private static List<Type> GetAllTypesThatImplement(Type implementingType)
+        {
+            var list = new List<Type>();
+            AppDomain.CurrentDomain.GetAssemblies().ToList()
+                .ForEach(assembly => assembly.GetTypes()
+                                         .Where(type => type.IsAbstract == false)
+                                         .Where(type => type.IsInterface == false)
+                                         .Where(type => type.GetInterfaces().Contains(implementingType))
+                                         .ToList().ForEach(list.Add));
+            return list;
         }
 
         private static IContainer CreateTheContainer()
@@ -51,13 +59,6 @@ namespace warmup
         {
             registry.For<IWarmupConfigurationProvider>()
                 .Use<ConfigurationFileWarmupConfigurationProvider>();
-
-            registry.For<IFileRetriever>()
-                .Use<GitTemplateFilesRetriever>()
-                .Named(Guid.NewGuid().ToString());
-            registry.For<IFileRetriever>()
-                .Use<SvnTemplateFilesRetriever>()
-                .Named(Guid.NewGuid().ToString());
         }
 
         private static void LoadApplicationBusImplementations(Registry registry)
@@ -69,12 +70,17 @@ namespace warmup
                 .Use<StructureMapMessageHandlerFactory>();
         }
 
-        private static void RegisterAllInterfaceToClassNameMatchesInCurrentAssembly(Registry registry)
+        private static void RegisterAllInterfaceToClassNameMatchesInCurrentAssembly(IRegistry registry)
         {
             registry.Scan(x =>
                               {
                                   x.TheCallingAssembly();
                                   x.WithDefaultConventions();
+                              });
+            registry.Scan(x =>
+                              {
+                                  x.AssembliesFromApplicationBaseDirectory();
+                                  x.With(new FileRetrieverConvention());
                               });
         }
     }

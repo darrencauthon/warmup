@@ -54,6 +54,7 @@
     <Compile Include="Behaviors\RetrieveFilesFromTheSvnRepository.cs" />
     <Compile Include="Behaviors\DetermineThePathToPutTheFiles.cs" />
     <Compile Include="Behaviors\RetrieveFilesFromTheGitRepository.cs" />
+    <Compile Include="FileRetrieverConvention.cs" />
     <Compile Include="Messages\RetrieveFilesFromSvnRepositoryMessage.cs" />
     <Compile Include="Messages\GetTargetFilePathMessage.cs" />
     <Compile Include="Messages\RetrieveFilesFromGitRepositoryMessage.cs" />
