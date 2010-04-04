@@ -51,6 +51,7 @@
     <Compile Include="..\SolutionVersion.cs">
       <Link>SolutionVersion.cs</Link>
     </Compile>
+    <Compile Include="Messages\ReplaceTokensInFileMessage.cs" />
     <Compile Include="Setup\ApplicationBusBuilder.cs" />
     <Compile Include="Setup\AssemblyLoader.cs" />
     <Compile Include="Behaviors\RetrieveFilesFromTheSvnRepository.cs" />

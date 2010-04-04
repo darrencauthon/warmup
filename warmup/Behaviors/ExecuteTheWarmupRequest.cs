@@ -9,30 +9,25 @@ namespace warmup.Behaviors
     public class ExecuteTheWarmupRequest : IMessageHandler<WarmupRequestMessage>
     {
         private readonly IFileRetriever[] fileRetrievers;
-        private readonly ITokensInFilesReplacer tokensInFilesReplacer;
+        private readonly IApplicationBus applicationBus;
 
-        public ExecuteTheWarmupRequest(IFileRetriever[] fileRetrievers, ITokensInFilesReplacer tokensInFilesReplacer)
+        public ExecuteTheWarmupRequest(IFileRetriever[] fileRetrievers, IApplicationBus applicationBus)
         {
             this.fileRetrievers = fileRetrievers;
-            this.tokensInFilesReplacer = tokensInFilesReplacer;
+            this.applicationBus = applicationBus;
         }
 
         public void Handle(WarmupRequestMessage warmupRequestMessage)
         {
-            RetrieveTheTemplateFiles(warmupRequestMessage);
+           RetrieveTheTemplateFiles(warmupRequestMessage);
 
-            ReplaceTokensInTheTemplateFiles(warmupRequestMessage);
+           ReplaceTokensInTheTemplateFiles(warmupRequestMessage);
         }
 
         private void ReplaceTokensInTheTemplateFiles(WarmupRequestMessage warmupRequestMessage)
         {
             Console.WriteLine("replacing tokens");
-            (CreateTokenFileReplacer()).ReplaceTokens(warmupRequestMessage.TokenReplaceValue);
-        }
-
-        private ITokensInFilesReplacer CreateTokenFileReplacer()
-        {
-            return tokensInFilesReplacer;
+            applicationBus.Send(new ReplaceTokensInFileMessage{ TokenReplaceValue = warmupRequestMessage.TokenReplaceValue});
         }
 
         private void RetrieveTheTemplateFiles(WarmupRequestMessage warmupRequestMessage)

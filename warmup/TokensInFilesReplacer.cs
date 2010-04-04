@@ -6,34 +6,13 @@ using warmup.Messages;
 
 namespace warmup
 {
-    public interface ITokensInFilesReplacer
-    {
-        void ReplaceTokens(string name);
-    }
-
-    public class TokensInFilesReplacer : ITokensInFilesReplacer
+    public class TokensInFilesReplacer : IMessageHandler<ReplaceTokensInFileMessage>
     {
         private readonly IApplicationBus applicationBus;
 
         public TokensInFilesReplacer(IApplicationBus applicationBus)
         {
             this.applicationBus = applicationBus;
-        }
-
-        public void ReplaceTokens(string name)
-        {
-            var startingPoint = new DirectoryInfo(GetThePath(name));
-
-            //move all directories
-            MoveAllDirectories(startingPoint, name);
-
-            startingPoint = new DirectoryInfo(startingPoint.FullName.Replace("__NAME__", name));
-
-            //move all files
-            MoveAllFiles(startingPoint, name);
-
-            //replace file content
-            ReplaceTokensInTheFiles(startingPoint, name);
         }
 
         private string GetThePath(string name)
@@ -115,6 +94,24 @@ namespace warmup
             {
                 MoveAllDirectories(info, name);
             }
+        }
+
+        public void Handle(ReplaceTokensInFileMessage message)
+        {
+            var name = message.TokenReplaceValue;
+
+            var startingPoint = new DirectoryInfo(GetThePath(name));
+
+            //move all directories
+            MoveAllDirectories(startingPoint, name);
+
+            startingPoint = new DirectoryInfo(startingPoint.FullName.Replace("__NAME__", name));
+
+            //move all files
+            MoveAllFiles(startingPoint, name);
+
+            //replace file content
+            ReplaceTokensInTheFiles(startingPoint, name);
         }
     }
 }
