@@ -75,7 +75,7 @@
     <Compile Include="settings\WarmupConfiguration.cs" />
     <Compile Include="TemplateFileRetrievers\SvnTemplateFilesRetriever.cs" />
     <Compile Include="Behaviors\ProcessCommandLineWarmupRequestBehavior.cs" />
-    <Compile Include="Behaviors\Behavior.cs" />
+    <Compile Include="Behaviors\ReplaceTokensInFileBehavior.cs" />
     <Compile Include="Behaviors\ExecuteTheWarmupRequestBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
